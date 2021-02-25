@@ -14,9 +14,9 @@ namespace BBGCombination.Domain
         {
             HostFactory.Run(hostConfig =>
             {
-                hostConfig.Service<EmailService>(serviceConfig =>
+                hostConfig.Service<NotifyService>(serviceConfig =>
                 {
-                    serviceConfig.ConstructUsing(() => new EmailService());
+                    serviceConfig.ConstructUsing(() => new NotifyService());
                     serviceConfig.WhenStarted(s => s.Start());
                     serviceConfig.WhenStopped(s => s.Stop());
                 });

@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 
 namespace BBGCombination.Domain.Service
 {
-    public class EmailService
+    public class NotifyService
     {
-        // Send mail Term Loan Method
+        public void Start()
+        {
+            // call Email Sevice
+        }
+        public void Stop()
+        {
 
-        // Send mail Leae Finance Loan Method
-
-        // Send mail Overdraft Loan Method
+        }
     }
 }
