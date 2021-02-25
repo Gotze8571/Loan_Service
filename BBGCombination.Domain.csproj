@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\EmailService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -86,7 +87,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\DAL\" />
-    <Folder Include="Service\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BBGCombination.Core\BBGCombination.Core.csproj">
