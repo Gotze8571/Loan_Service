@@ -11,6 +11,7 @@ namespace BBGCombination.Domain.Service
         public void Start()
         {
             // call Email Sevice
+            //var result = EmailService;
         }
         public void Stop()
         {

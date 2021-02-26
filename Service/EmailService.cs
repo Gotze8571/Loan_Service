@@ -59,8 +59,8 @@ namespace BBGCombination.Domain.Service
                     string path2 = ConfigurationManager.AppSettings["EmailTemplatePath2"]; //Directory.GetCurrentDirectory() + "\\EmailTemplate\\TwoMonthsConcess.html"; //
                     string rootPath = Directory.GetCurrentDirectory();
 
-                    // calculate duration
-                    //DateTime sampleDate = new DateTime(2020, 11, 1);// 9/23/2019
+                    //calculate duration
+                   // DateTime sampleDate = new DateTime(2020, 11, 1);// 9/23/2019
                     DateTime sampleDate = DateTime.Parse(thisEmailDetail.DueDate);
                     // DateTime sampleDate = new DateTime(currentDate);// 9/23/2019\
 
@@ -69,35 +69,29 @@ namespace BBGCombination.Domain.Service
                     todayDate = DateTime.Now;
                     var newSpan = (sampleDate - todayDate).Days;
 
-
                     //var preConc = (newSpan.TotalDays) / 30;
                     //var calCon = Math.Round(preConc, 0);
 
                     var stringPath = "";
                     if (-newSpan >= 0)
                     {
-                       // Logger.Info("The concession has expired:" + newSpan);
+                        // Logger.Info("The concession has expired:" + newSpan);
                     }
 
                     else if (newSpan <= 28 && newSpan <= 31)
                     {
                         stringPath = path;
-                      //  Logger.Info("Path for one month:" + path);
+                        // Logger.Info("Path for one month:" + path);
                     }
                     else if (newSpan >= 31 && newSpan >= 33)
                     {
                         stringPath = path2;
-                      //  Logger.Info("Path for Two months or more:" + path2);
+                        //  Logger.Info("Path for Two months or more:" + path2);
                     }
                     else
                     {
                         stringPath = path2;
-                      //  Logger.Info("Path for Two months or more:" + path2);
                     }
-
-
-                    // Get customer information.
-                    // var getCustDetails = dB.GetConcessCustomerDetails(customerId);
 
                     StreamReader str = new StreamReader(stringPath);
                     string MailText = str.ReadToEnd();
@@ -132,7 +126,6 @@ namespace BBGCombination.Domain.Service
                     Result = "failed" + ex.Message;
                 }
             }
-
             return null;
         }
 
@@ -147,23 +140,27 @@ namespace BBGCombination.Domain.Service
             todayDate = DateTime.Now;
             DateTime date = DateTime.Parse(details.DueDate);
             var noOfDays = (date - DateTime.Now).Days;
+            int TermLoanNo = 0;
 
             // Determine noOfDays ie Overdue.. call send mail
-            if(noOfDays <= 0)
+            if(noOfDays <= 0 && TermLoanNo == 1)
             {
                 // Call send mail
                 // SendEmail()
-                // var result = SendEmail(db.GetTermLoanCustomerDetail());
+                string path = ConfigurationManager.AppSettings["EmailTemplatePath1"]; 
+                 var result = SendEmail(db.GetTermLoanCustomerDetail());
             }
             // Determine noOfDays ie 30days
             if (noOfDays == 30)
             {
+                string path = ConfigurationManager.AppSettings["EmailTemplatePath2"];
                 // Call send mail mtd
                 // var result = SendEmail(db.GetTermLoanCustomerDetail());
             }
             // Determine noOfDays ie 14days
             if (noOfDays == 14)
             {
+                string path = ConfigurationManager.AppSettings["EmailTemplatePath1"];
                 // var result = SendEmail(db.GetTermLoanCustomerDetail());
             }
             // Determine noOfDays ie 7days
