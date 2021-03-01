@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BBGCombination.Domain.Service
@@ -99,8 +100,8 @@ namespace BBGCombination.Domain.Service
                     MailText = MailText.Replace("{CustomerName}", thisEmailDetail.AccountName);
                     MailText = MailText.Replace("{AccountNumber}", thisEmailDetail.AccountNumber);
                     MailText = MailText.Replace("{DueDate}", thisEmailDetail.DueDate);
-                    MailText = MailText.Replace("{DueAmt}", thisEmailDetail.DueAmt);
-                    MailText = MailText.Replace("{DueInDays}", thisEmailDetail.DueInDays);
+                    //MailText = MailText.Replace("{DueAmt}", Double.Parse(thisEmailDetail.DueAmt).ToString());
+                    //MailText = MailText.Replace("{DueInDays}", thisEmailDetail.DueInDays);
                     //MailText = MailText.Replace("{OutstandingAmt}", Double.Parse(thisEmailDetail.OutstandingAmt).ToString());
                    // MailText = MailText.Replace("{PastDueObligationAmt}", thisEmailDetail.PastDueObligationAmt);
                     MailText = MailText.Replace("{CustomerEmail}", thisEmailDetail.CustomerEmail);
@@ -127,6 +128,15 @@ namespace BBGCombination.Domain.Service
                 }
             }
             return null;
+        }
+        public static bool ValidateEmail(string email)
+        {
+            bool emailValidated = false;
+            if (Regex.IsMatch(email, "^([\\w-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([\\w-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$"))
+            {
+                emailValidated = true;
+            }
+            return emailValidated;
         }
 
         // Send mail Term Loan Method
