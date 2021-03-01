@@ -15,7 +15,7 @@ namespace BBGCombination.Domain.Service
     
     public class EmailService
     {
-        public string SendEmail(List<CustomerDetails> emailDetail)
+        public static string SendEmail(List<CustomerDetails> emailDetail)
         {
             var CcAddress = "";
             var MailSubject = ConfigurationManager.AppSettings["MailSubject"].ToString();
@@ -130,7 +130,7 @@ namespace BBGCombination.Domain.Service
         }
 
         // Send mail Term Loan Method
-        public string GetTermLoan()
+        public  static string GetTermLoan()
         {
             TermLoan termLoan = new TermLoan();
             LoanCustomerDB db = new LoanCustomerDB();
