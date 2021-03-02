@@ -13,9 +13,14 @@ using System.Threading.Tasks;
 
 namespace BBGCombination.Domain.Service
 {
-    
+  
     public class EmailService
     {
+         LoanCustomerDB database = new LoanCustomerDB();
+        public EmailService()
+        {
+            GetTermLoan();
+        }
         public static string SendEmail(List<CustomerDetails> emailDetail)
         {
             var CcAddress = "";
@@ -58,6 +63,9 @@ namespace BBGCombination.Domain.Service
 
                     string path = ConfigurationManager.AppSettings["EmailTemplatePath1"]; // Directory.GetCurrentDirectory() + "\\EmailTemplate\\ConcessTemp.html";// 
                     string path2 = ConfigurationManager.AppSettings["EmailTemplatePath2"]; //Directory.GetCurrentDirectory() + "\\EmailTemplate\\TwoMonthsConcess.html"; //
+                    string path3 = ConfigurationManager.AppSettings["EmailTemplatePath3"];
+                    string path4 = ConfigurationManager.AppSettings["EmailTemplatePath4"];
+                    string path5 = ConfigurationManager.AppSettings["EmailTemplatePath5"];
                     string rootPath = Directory.GetCurrentDirectory();
 
                     //calculate duration
@@ -74,26 +82,34 @@ namespace BBGCombination.Domain.Service
                     //var calCon = Math.Round(preConc, 0);
 
                     var stringPath = "";
-                    if (-newSpan >= 0)
-                    {
-                        // Logger.Info("The concession has expired:" + newSpan);
-                    }
-
-                    else if (newSpan <= 28 && newSpan <= 31)
+                    if (newSpan == 0)
                     {
                         stringPath = path;
-                        // Logger.Info("Path for one month:" + path);
+                        // Logger.Info("The concession has expired:" + newSpan);
                     }
-                    else if (newSpan >= 31 && newSpan >= 33)
+                    else if (newSpan == 7)
                     {
                         stringPath = path2;
+                        // Logger.Info("Path for one month:" + path);
+                    }
+                    else if (newSpan == 14)
+                    {
+                        stringPath = path3;
                         //  Logger.Info("Path for Two months or more:" + path2);
+                    }
+                    else if(newSpan == 30)
+                    {
+                        stringPath = path4;
+                    }
+                    else if (newSpan >= -1)
+                    {
+                        stringPath = path5;
                     }
                     else
                     {
-                        stringPath = path2;
-                    }
 
+                    }
+                  
                     StreamReader str = new StreamReader(stringPath);
                     string MailText = str.ReadToEnd();
                     str.Close();
@@ -103,7 +119,7 @@ namespace BBGCombination.Domain.Service
                     //MailText = MailText.Replace("{DueAmt}", Double.Parse(thisEmailDetail.DueAmt).ToString());
                     //MailText = MailText.Replace("{DueInDays}", thisEmailDetail.DueInDays);
                     //MailText = MailText.Replace("{OutstandingAmt}", Double.Parse(thisEmailDetail.OutstandingAmt).ToString());
-                   // MailText = MailText.Replace("{PastDueObligationAmt}", thisEmailDetail.PastDueObligationAmt);
+                    // MailText = MailText.Replace("{PastDueObligationAmt}", thisEmailDetail.PastDueObligationAmt);
                     MailText = MailText.Replace("{CustomerEmail}", thisEmailDetail.CustomerEmail);
                     MailText = MailText.Replace("{ExcessAmt}", thisEmailDetail.ExcessAmt);
                     MailText = MailText.Replace("{AgreeMonthlyVol}", thisEmailDetail.AgreeMonthlyVol);
@@ -140,49 +156,50 @@ namespace BBGCombination.Domain.Service
         }
 
         // Send mail Term Loan Method
-        public  static string GetTermLoan()
+        public string GetTermLoan()
         {
-            TermLoan termLoan = new TermLoan();
-            LoanCustomerDB db = new LoanCustomerDB();
-            CustomerDetails details = new CustomerDetails();
+            var result = SendEmail(database.GetTermLoanCustomerDetail());
+            //TermLoan termLoan = new TermLoan();
+           
+            //CustomerDetails details = new CustomerDetails();
 
-            DateTime todayDate = new DateTime();
-            todayDate = DateTime.Now;
-            DateTime date = DateTime.Parse(details.DueDate);
-            var noOfDays = (date - DateTime.Now).Days;
-            int TermLoanNo = 0;
+            //DateTime todayDate = new DateTime();
+            //todayDate = DateTime.Now;
+            //DateTime date = DateTime.Parse(details.DueDate);
+            //var noOfDays = (date - DateTime.Now).Days;
+            //int TermLoanNo = 0;
 
-            // Determine noOfDays ie Overdue.. call send mail
-            if(noOfDays <= 0 && TermLoanNo == 1)
-            {
-                // Call send mail
-                // SendEmail()
-                string path = ConfigurationManager.AppSettings["EmailTemplatePath1"]; 
-                 var result = SendEmail(db.GetTermLoanCustomerDetail());
-            }
-            // Determine noOfDays ie 30days
-            if (noOfDays == 30)
-            {
-                string path = ConfigurationManager.AppSettings["EmailTemplatePath2"];
-                // Call send mail mtd
-                // var result = SendEmail(db.GetTermLoanCustomerDetail());
-            }
-            // Determine noOfDays ie 14days
-            if (noOfDays == 14)
-            {
-                string path = ConfigurationManager.AppSettings["EmailTemplatePath1"];
-                // var result = SendEmail(db.GetTermLoanCustomerDetail());
-            }
-            // Determine noOfDays ie 7days
-            if (noOfDays == 7)
-            {
-                // var result = SendEmail(db.GetTermLoanCustomerDetail());
-            }
-            // Determine noOfDays ie Expired Days.
-            if (noOfDays == 0)
-            {
-                // var result = SendEmail(db.GetTermLoanCustomerDetail());
-            }
+            //// Determine noOfDays ie Overdue.. call send mail
+            //if(noOfDays <= 0 && TermLoanNo == 1)
+            //{
+            //    // Call send mail
+            //    // SendEmail()
+            //    string path = ConfigurationManager.AppSettings["EmailTemplatePath1"]; 
+            //     var result = SendEmail(db.GetTermLoanCustomerDetail());
+            //}
+            //// Determine noOfDays ie 30days
+            //if (noOfDays == 30)
+            //{
+            //    string path = ConfigurationManager.AppSettings["EmailTemplatePath2"];
+            //    // Call send mail mtd
+            //    // var result = SendEmail(db.GetTermLoanCustomerDetail());
+            //}
+            //// Determine noOfDays ie 14days
+            //if (noOfDays == 14)
+            //{
+            //    string path = ConfigurationManager.AppSettings["EmailTemplatePath1"];
+            //    // var result = SendEmail(db.GetTermLoanCustomerDetail());
+            //}
+            //// Determine noOfDays ie 7days
+            //if (noOfDays == 7)
+            //{
+            //    // var result = SendEmail(db.GetTermLoanCustomerDetail());
+            //}
+            //// Determine noOfDays ie Expired Days.
+            //if (noOfDays == 0)
+            //{
+            //    // var result = SendEmail(db.GetTermLoanCustomerDetail());
+            //}
             // var result = SendEmail(db.GetTermLoanCustomerDetail());
 
             return null;
