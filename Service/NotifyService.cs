@@ -22,8 +22,8 @@ namespace BBGCombination.Domain.Service
         private static Logger logger = LogManager.GetCurrentClassLogger();
         public void Start()
         {
-           
-            thisTimer = new System.Timers.Timer();
+            logger.Info("Service Start!!");
+            thisTimer = new System.Timers.Timer(1000);
             thisTimer.Enabled = true;
             int timerInterval = 0;
             timerInterval = 1000;
@@ -41,10 +41,9 @@ namespace BBGCombination.Domain.Service
         {
             // call Email Sevice
            // var result = SendEmail(db.GetTermLoanCustomerDetail());
-          //  var result = new EmailService();
+             // var result = new EmailService();
             //var result2 = EmailService.GetLeaseLoan();
             //var result3 = EmailService.GetOverdraftLoan();
-
             logger.Info("Service running!!");
 
         }
