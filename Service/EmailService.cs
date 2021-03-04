@@ -30,6 +30,7 @@ namespace BBGCombination.Domain.Service
             GetLeaseLoan();
             GetOverdraftLoan();
         }
+        // Send mail for Term Loan
         public static string SendTermLoanEmail(List<CustomerDetails> emailDetail)
         {
             var CcAddress = "";
@@ -90,7 +91,7 @@ namespace BBGCombination.Domain.Service
                     //var calCon = Math.Round(preConc, 0);
 
                     var stringPath = "";
-                    if (-newSpan >= 0)
+                    if (newSpan >= 0)
                     {
                         stringPath = path;
                         logger.Info("The No of days and path: ");
@@ -131,7 +132,7 @@ namespace BBGCombination.Domain.Service
                     //MailText = MailText.Replace("{DueAmt}", Double.Parse(thisEmailDetail.DueAmt).ToString());
                     //MailText = MailText.Replace("{DueInDays}", thisEmailDetail.DueInDays);
                     //MailText = MailText.Replace("{OutstandingAmt}", Double.Parse(thisEmailDetail.OutstandingAmt).ToString());
-                    // MailText = MailText.Replace("{PastDueObligationAmt}", thisEmailDetail.PastDueObligationAmt);
+                    MailText = MailText.Replace("{PastDueObligationAmt}", thisEmailDetail.PastDueObligationAmt);
                     MailText = MailText.Replace("{CustomerEmail}", thisEmailDetail.CustomerEmail);
                     MailText = MailText.Replace("{ExcessAmt}", thisEmailDetail.ExcessAmt);
                     MailText = MailText.Replace("{AgreeMonthlyVol}", thisEmailDetail.AgreeMonthlyVol);
@@ -157,6 +158,7 @@ namespace BBGCombination.Domain.Service
             }
             return null;
         }
+       //Send mail - Lease Finance Loan
         public string SendLeaseFinanceLoanEmail(List<CustomerDetails> emailDetail)
         {
             var CcAddress = "";
@@ -335,6 +337,7 @@ namespace BBGCombination.Domain.Service
             }
             return null;
         }
+        // Send mail - Overdraft Loian
         public static string SendOverdraftLoanEmail(List<CustomerDetails> emailDetail)
         {
             var CcAddress = "";
