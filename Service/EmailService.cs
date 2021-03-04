@@ -1,6 +1,7 @@
 ﻿using BBGCombination.Core.DAL;
 using BBGCombination.Core.Entity;
 using BBGCombination.Core.Model;
+using BBGCombination.Domain.Data.DAL;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace BBGCombination.Domain.Service
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         LoanCustomerDB database = new LoanCustomerDB();
+        private readonly DataConnectorContext context;
         public EmailService()
         {
             GetTermLoan();
@@ -152,7 +154,7 @@ namespace BBGCombination.Domain.Service
             }
             return null;
         }
-        public static string SendLeaseFinanceLoanEmail(List<CustomerDetails> emailDetail)
+        public string SendLeaseFinanceLoanEmail(List<CustomerDetails> emailDetail)
         {
             var CcAddress = "";
             var MailSubject = ConfigurationManager.AppSettings["MailSubject"].ToString();
@@ -207,41 +209,75 @@ namespace BBGCombination.Domain.Service
                     // var newSpan = (sampleDate - todayDate).Days;
                     var newSpan = 0;
                     logger.Info("No of days to send mail: " + newSpan);
-
-                    //var preConc = (newSpan.TotalDays) / 30;
-                    //var calCon = Math.Round(preConc, 0);
-
                     var stringPath = "";
-                    if (-newSpan >= 0)
+                    if (newSpan == 0)
                     {
                         stringPath = path;
-                        logger.Info("The No of days and path: ");
+                        logger.Info("The No of days equal to zero:" + path);
+                        ActivityLog logPath = new ActivityLog
+                        {
+                            Activity = "",
+                            ActivityDate = DateTime.Now
+                        };
+                        context.Activitylogs.Add(logPath);
+                        context.SaveChanges();
+
                     }
                     else if (newSpan <= 7 && newSpan >= 8)
                     {
                         stringPath = path2;
-                        // Logger.Info("Path for one month:" + path);
+                        ActivityLog logPath2 = new ActivityLog
+                        {
+                            Activity = "",
+                            ActivityDate = DateTime.Now
+                        };
+                        context.Activitylogs.Add(logPath2);
+                        context.SaveChanges();
+                        logger.Info("Path for one month:" + path);
                     }
                     else if (newSpan <= 14 && newSpan >= 15)
                     {
                         stringPath = path3;
-                        //  Logger.Info("Path for Two months or more:" + path2);
+                        ActivityLog logPath3 = new ActivityLog
+                        {
+                            Activity = "",
+                            ActivityDate = DateTime.Now
+                        };
+                        context.Activitylogs.Add(logPath3);
+                        context.SaveChanges();
+                        logger.Info("Path for one month:" + path);
                     }
                     else if (newSpan <= 30 && newSpan >= 31)
                     {
                         stringPath = path4;
+                        ActivityLog logPath4 = new ActivityLog
+                        {
+                            Activity = "",
+                            ActivityDate = DateTime.Now
+                        };
+                        context.Activitylogs.Add(logPath4);
+                        context.SaveChanges();
                     }
                     else if (newSpan <= -1 && newSpan >= -2)
                     {
                         stringPath = path5;
+                        ActivityLog logPath5 = new ActivityLog
+                        {
+                            Activity = "",
+                            ActivityDate = DateTime.Now
+                        };
+                        context.Activitylogs.Add(logPath5);
+                        context.SaveChanges();
                     }
                     else
                     {
-                        ActivityLog ac = new ActivityLog
+                        ActivityLog log1 = new ActivityLog
                         {
-                            Activity = "less days or more days",
+                            Activity = "",
                             ActivityDate = DateTime.Now
                         };
+                        context.Activitylogs.Add(log1);
+                        context.SaveChanges();
                     }
 
                     StreamReader str = new StreamReader(stringPath);
@@ -271,10 +307,27 @@ namespace BBGCombination.Domain.Service
                     obj.Send(msg);
                     Result = "Successful";
                     //Logger.Info("The mail is: " + Result);
+
+                    ActivityLog log = new ActivityLog
+                    {
+                        Activity = "",
+                        ActivityDate = DateTime.Now
+                    };
+                    context.Activitylogs.Add(log);
+                    context.SaveChanges();
+                    logger.Info("");
                 }
                 catch (Exception ex)
                 {
                     Result = "failed" + ex.Message;
+                    ErrorLog error = new ErrorLog
+                    {
+                        ErrorName = "",
+                        ErrorDate = DateTime.Now
+                    };
+                    context.ErrorLogs.Add(error);
+                    context.SaveChanges();
+                    logger.Info("");
                 }
             }
             return null;
@@ -319,8 +372,8 @@ namespace BBGCombination.Domain.Service
 
                     dynamic emailServer = ConfigurationManager.AppSettings["EmailServer"];
 
-                    string path = ConfigurationManager.AppSettings["ExpiredTermLoanTemplatePath"]; // Directory.GetCurrentDirectory() + "\\EmailTemplate\\ConcessTemp.html";// 
-                    string path2 = ConfigurationManager.AppSettings["7daysTermLoanTemplatePath"]; //Directory.GetCurrentDirectory() + "\\EmailTemplate\\TwoMonthsConcess.html"; //
+                    string path = ConfigurationManager.AppSettings["ExpiredTermLoanTemplatePath"]; 
+                    string path2 = ConfigurationManager.AppSettings["7daysTermLoanTemplatePath"]; 
                     string path3 = ConfigurationManager.AppSettings["14daysTermLoanTemplatePath"];
                     string path4 = ConfigurationManager.AppSettings["30daysTermLoanTemplatePath"];
                     string path5 = ConfigurationManager.AppSettings["OverdueTermLoanTemplatePath"];
