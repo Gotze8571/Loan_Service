@@ -21,6 +21,9 @@ namespace BBGCombination.Domain.Service
         private static Logger logger = LogManager.GetCurrentClassLogger();
         LoanCustomerDB database = new LoanCustomerDB();
         private readonly DataConnectorContext context;
+        /// <summary>
+        ///  Calling all Loan Types
+        /// </summary>
         public EmailService()
         {
             GetTermLoan();
