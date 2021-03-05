@@ -35,18 +35,24 @@ namespace BBGCombination.Domain.Service
         }
         public void Stop()
         {
+            thisTimer.AutoReset = false;
+            thisTimer.Enabled = false;
+            thisTimer.Stop();
             logger.Info("Service Stopped!!");
         }
         private void thistTimer_Tick(object sender, ElapsedEventArgs e)
         {
-            // call Email Sevice
-           // var result = SendEmail(db.GetTermLoanCustomerDetail());
-             // var result = new EmailService();
-            //var result2 = EmailService.GetLeaseLoan();
-            //var result3 = EmailService.GetOverdraftLoan();
-            logger.Info("Service running!!");
-
+            try
+            {
+                // call Email Sevice
+                logger.Info("Service running!!");
+                thisTimer.Stop();
+                thisTimer.Dispose();
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex);
+            }
         }
-        
     }
 }

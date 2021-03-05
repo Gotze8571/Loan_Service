@@ -27,8 +27,8 @@ namespace BBGCombination.Domain.Service
         public EmailService()
         {
             GetTermLoan();
-            GetLeaseLoan();
-            GetOverdraftLoan();
+            //GetLeaseLoan();
+            //GetOverdraftLoan();
         }
         // Send mail for Term Loan
         public static string SendTermLoanEmail(List<CustomerDetails> emailDetail)
@@ -129,10 +129,10 @@ namespace BBGCombination.Domain.Service
                     MailText = MailText.Replace("{CustomerName}", thisEmailDetail.AccountName);
                     MailText = MailText.Replace("{AccountNumber}", thisEmailDetail.AccountNumber);
                     MailText = MailText.Replace("{DueDate}", thisEmailDetail.DueDate);
-                    //MailText = MailText.Replace("{DueAmt}", Double.Parse(thisEmailDetail.DueAmt).ToString());
-                    //MailText = MailText.Replace("{DueInDays}", thisEmailDetail.DueInDays);
-                    //MailText = MailText.Replace("{OutstandingAmt}", Double.Parse(thisEmailDetail.OutstandingAmt).ToString());
-                    MailText = MailText.Replace("{PastDueObligationAmt}", thisEmailDetail.PastDueObligationAmt);
+                    MailText = MailText.Replace("{DueAmt}", Convert.ToDouble(thisEmailDetail.DueAmt).ToString());
+                    MailText = MailText.Replace("{DueInDays}", (thisEmailDetail.DueInDays).ToString());
+                    MailText = MailText.Replace("{OutstandingAmt}", Convert.ToDouble(thisEmailDetail.OutstandingAmt).ToString());
+                    MailText = MailText.Replace("{PastDueObligationAmt}", Convert.ToDouble(thisEmailDetail.PastDueObligationAmt).ToString());
                     MailText = MailText.Replace("{CustomerEmail}", thisEmailDetail.CustomerEmail);
                     MailText = MailText.Replace("{ExcessAmt}", thisEmailDetail.ExcessAmt);
                     MailText = MailText.Replace("{AgreeMonthlyVol}", thisEmailDetail.AgreeMonthlyVol);
@@ -291,10 +291,10 @@ namespace BBGCombination.Domain.Service
                     MailText = MailText.Replace("{CustomerName}", thisEmailDetail.AccountName);
                     MailText = MailText.Replace("{AccountNumber}", thisEmailDetail.AccountNumber);
                     MailText = MailText.Replace("{DueDate}", thisEmailDetail.DueDate);
-                    //MailText = MailText.Replace("{DueAmt}", Double.Parse(thisEmailDetail.DueAmt).ToString());
-                    //MailText = MailText.Replace("{DueInDays}", thisEmailDetail.DueInDays);
-                    //MailText = MailText.Replace("{OutstandingAmt}", Double.Parse(thisEmailDetail.OutstandingAmt).ToString());
-                    // MailText = MailText.Replace("{PastDueObligationAmt}", thisEmailDetail.PastDueObligationAmt);
+                    MailText = MailText.Replace("{DueAmt}", Convert.ToDouble(thisEmailDetail.DueAmt).ToString());
+                    MailText = MailText.Replace("{DueInDays}", (thisEmailDetail.DueInDays).ToString());
+                    MailText = MailText.Replace("{OutstandingAmt}", Convert.ToDouble(thisEmailDetail.OutstandingAmt).ToString());
+                    MailText = MailText.Replace("{PastDueObligationAmt}", Convert.ToDouble(thisEmailDetail.PastDueObligationAmt).ToString());
                     MailText = MailText.Replace("{CustomerEmail}", thisEmailDetail.CustomerEmail);
                     MailText = MailText.Replace("{ExcessAmt}", thisEmailDetail.ExcessAmt);
                     MailText = MailText.Replace("{AgreeMonthlyVol}", thisEmailDetail.AgreeMonthlyVol);
@@ -394,9 +394,6 @@ namespace BBGCombination.Domain.Service
                     var newSpan = 0;
                     logger.Info("No of days to send mail: " + newSpan);
 
-                    //var preConc = (newSpan.TotalDays) / 30;
-                    //var calCon = Math.Round(preConc, 0);
-
                     var stringPath = "";
                     if (-newSpan >= 0)
                     {
@@ -436,10 +433,10 @@ namespace BBGCombination.Domain.Service
                     MailText = MailText.Replace("{CustomerName}", thisEmailDetail.AccountName);
                     MailText = MailText.Replace("{AccountNumber}", thisEmailDetail.AccountNumber);
                     MailText = MailText.Replace("{DueDate}", thisEmailDetail.DueDate);
-                    //MailText = MailText.Replace("{DueAmt}", Double.Parse(thisEmailDetail.DueAmt).ToString());
-                    //MailText = MailText.Replace("{DueInDays}", thisEmailDetail.DueInDays);
-                    //MailText = MailText.Replace("{OutstandingAmt}", Double.Parse(thisEmailDetail.OutstandingAmt).ToString());
-                    // MailText = MailText.Replace("{PastDueObligationAmt}", thisEmailDetail.PastDueObligationAmt);
+                    MailText = MailText.Replace("{DueAmt}", Convert.ToDouble(thisEmailDetail.DueAmt).ToString());
+                    MailText = MailText.Replace("{DueInDays}", (thisEmailDetail.DueInDays).ToString());
+                    MailText = MailText.Replace("{OutstandingAmt}", Convert.ToDouble(thisEmailDetail.OutstandingAmt).ToString());
+                    MailText = MailText.Replace("{PastDueObligationAmt}", Convert.ToDouble(thisEmailDetail.PastDueObligationAmt).ToString());
                     MailText = MailText.Replace("{CustomerEmail}", thisEmailDetail.CustomerEmail);
                     MailText = MailText.Replace("{ExcessAmt}", thisEmailDetail.ExcessAmt);
                     MailText = MailText.Replace("{AgreeMonthlyVol}", thisEmailDetail.AgreeMonthlyVol);
@@ -491,7 +488,7 @@ namespace BBGCombination.Domain.Service
         public string GetOverdraftLoan()
         {
             var result3 = SendOverdraftLoanEmail(database.GetOverdraftLoanCustomerDetail());
-            return null;
+            return result3;
         }
     }
 }
