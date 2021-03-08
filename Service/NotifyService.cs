@@ -31,7 +31,7 @@ namespace BBGCombination.Domain.Service
             thisTimer.AutoReset = true;
             thisTimer.Elapsed += thistTimer_Tick;
             thisTimer.Start();
-            var result = new EmailService();
+           
         }
         public void Stop()
         {
@@ -46,6 +46,7 @@ namespace BBGCombination.Domain.Service
             {
                 // call Email Sevice
                 logger.Info("Service running!!");
+                var result = new EmailService();
                 thisTimer.Stop();
                 thisTimer.Dispose();
             }
