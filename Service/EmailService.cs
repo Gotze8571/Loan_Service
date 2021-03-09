@@ -399,24 +399,49 @@ namespace BBGCombination.Domain.Service
                     {
                         stringPath = path;
                         logger.Info("The No of days and path: ");
+                        ActivityLog ac = new ActivityLog
+                        {
+                            Activity = "0 days",
+                            ActivityDate = DateTime.Now
+                        };
                     }
                     else if (newSpan <= 7 && newSpan >= 8)
                     {
                         stringPath = path2;
+                        ActivityLog ac = new ActivityLog
+                        {
+                            Activity = "7 days",
+                            ActivityDate = DateTime.Now
+                        };
                         // Logger.Info("Path for one month:" + path);
                     }
                     else if (newSpan <= 14 && newSpan >= 15)
                     {
                         stringPath = path3;
+                        ActivityLog ac = new ActivityLog
+                        {
+                            Activity = "15 days",
+                            ActivityDate = DateTime.Now
+                        };
                         //  Logger.Info("Path for Two months or more:" + path2);
                     }
                     else if (newSpan <= 30 && newSpan >= 31)
                     {
                         stringPath = path4;
+                        ActivityLog ac = new ActivityLog
+                        {
+                            Activity = "30 days",
+                            ActivityDate = DateTime.Now
+                        };
                     }
                     else if (newSpan <= -1 && newSpan >= -2)
                     {
                         stringPath = path5;
+                        ActivityLog ac = new ActivityLog
+                        {
+                            Activity = "less days",
+                            ActivityDate = DateTime.Now
+                        };
                     }
                     else
                     {

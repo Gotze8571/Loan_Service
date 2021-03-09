@@ -20,23 +20,32 @@ namespace BBGCombination.Domain.Service
         LoanCustomerDB db = new LoanCustomerDB();
         public System.Timers.Timer thisTimer;
         private static Logger logger = LogManager.GetCurrentClassLogger();
+
+        public NotifyService()
+        {
+            thisTimer = new Timer(1000)
+            {
+                AutoReset = true
+            };
+            thisTimer.Elapsed += thistTimer_Tick;
+        }
         public void Start()
         {
             logger.Info("Service Start!!");
-            thisTimer = new System.Timers.Timer(1000);
-            thisTimer.Enabled = true;
-            int timerInterval = 0;
-            timerInterval = 1000;
-            thisTimer.Interval = timerInterval;
-            thisTimer.AutoReset = true;
-            thisTimer.Elapsed += thistTimer_Tick;
+            //thisTimer = new System.Timers.Timer(1000);
+            //thisTimer.Enabled = true;
+            //int timerInterval = 0;
+            //timerInterval = 1000;
+            //thisTimer.Interval = timerInterval;
+            //thisTimer.AutoReset = true;
+            //thisTimer.Elapsed += thistTimer_Tick;
             thisTimer.Start();
            
         }
         public void Stop()
         {
-            thisTimer.AutoReset = false;
-            thisTimer.Enabled = false;
+            //thisTimer.AutoReset = false;
+            //thisTimer.Enabled = false;
             thisTimer.Stop();
             logger.Info("Service Stopped!!");
         }

@@ -12,15 +12,34 @@ namespace BBGCombination.Domain
     {
         static void Main(string[] args)
         {
-            HostFactory.Run(hostConfig =>
+            //HostFactory.Run(hostConfig =>
+            //{
+            //    hostConfig.Service<NotifyService>(serviceConfig =>
+            //    {
+            //        serviceConfig.ConstructUsing(() => new NotifyService());
+            //        serviceConfig.WhenStarted(s => s.Start());
+            //        serviceConfig.WhenStopped(s => s.Stop());
+            //    });
+            //});
+            var exitCode = HostFactory.Run(x =>
             {
-                hostConfig.Service<NotifyService>(serviceConfig =>
+                x.Service<NotifyService>(s =>
                 {
-                    serviceConfig.ConstructUsing(() => new NotifyService());
-                    serviceConfig.WhenStarted(s => s.Start());
-                    serviceConfig.WhenStopped(s => s.Stop());
+                    s.ConstructUsing(v => new NotifyService());
+                    s.WhenStarted(v => v.Start());
+                    s.WhenStopped(v => v.Stop());
                 });
+
+                x.RunAsLocalSystem();
+
+                x.SetServiceName("BBGLoanCombinationService");
+                x.SetDisplayName("BBGLoan Service");
+                x.SetDescription("This is the BBG Loan Combination Service used to notify Customers.");
             });
+
+            int exitCodeValue = (int)Convert.ChangeType(exitCode, exitCode.GetTypeCode());
+            Environment.ExitCode =  exitCodeValue;
+
             Console.WriteLine("The Service is Working!!");
             Console.ReadLine();
         }
