@@ -27,8 +27,8 @@ namespace BBGCombination.Domain.Service
         public EmailService()
         {
             GetTermLoan();
-            GetLeaseLoan();
-            GetOverdraftLoan();
+            //GetLeaseLoan();
+           // GetOverdraftLoan();
         }
         // Send mail for Term Loan
         public static string SendTermLoanEmail(List<CustomerDetails> emailDetail)
@@ -400,8 +400,8 @@ namespace BBGCombination.Domain.Service
 
                     DateTime todayDate = new DateTime();
                     todayDate = DateTime.Now;
-                    // var newSpan = (sampleDate - todayDate).Days;
-                    var newSpan = 0;
+                     var newSpan = (sampleDate - todayDate).Days;
+                   // var newSpan = 0;
                     logger.Info("No of days to send mail: " + newSpan);
 
                     var stringPath = "";
@@ -516,6 +516,7 @@ namespace BBGCombination.Domain.Service
         public string GetTermLoan()
         {
             var result = SendTermLoanEmail(database.GetTermLoanCustomerDetail());
+            logger.Info("Connect email service to finacle!!");
             return result;
         }
         // Send mail Leae Finance Loan Method
@@ -530,5 +531,19 @@ namespace BBGCombination.Domain.Service
             var result3 = SendOverdraftLoanEmail(database.GetOverdraftLoanCustomerDetail());
             return result3;
         }
+
+        //// Get information from finacle and log customers details on 103 Db.
+        //public TermLoanList GetCustomersDetailsLogIntoTestServerTermLoan()
+        //{
+        //    CustomerDetails list = new CustomerDetails();
+        //    LoanCustomerDB data = new LoanCustomerDB();
+        //    var FromFinacleDetails = data.GetTermLoanCustomerDetail();
+        //    foreach (var detail in FromFinacleDetails)
+        //    {
+        //        var query = @"insert into ";
+        //    }
+            
+        //    return null;
+        //}
     }
 }

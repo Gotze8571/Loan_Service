@@ -28,6 +28,7 @@ namespace BBGCombination.Domain.Service
                 AutoReset = true
             };
             thisTimer.Elapsed += thistTimer_Tick;
+            logger.Info(thisTimer);
         }
         public void Start()
         {
