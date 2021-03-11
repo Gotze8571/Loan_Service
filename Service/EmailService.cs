@@ -90,10 +90,14 @@ namespace BBGCombination.Domain.Service
                     string DisplayName = ConfigurationManager.AppSettings["DisplayName"].ToString();
                     MailAddress FromAddress = new MailAddress(ConfigurationManager.AppSettings["EmailFrom"], DisplayName);
                     msg.From = FromAddress;
-
+                    logger.Info("Mail from Address: " + FromAddress);
                     string[] temp = null;
+
+                    thisEmailDetail.CustomerEmail = ConfigurationManager.AppSettings["EmailRecepient"].ToString();
+
                     if (string.IsNullOrEmpty(thisEmailDetail.CustomerEmail))
                     {
+                        logger.Info("The Customer Email:" + thisEmailDetail.CustomerEmail);
                         // Get Customer email to send mail To...
                     }
                     else
@@ -146,7 +150,6 @@ namespace BBGCombination.Domain.Service
                             };
                             db.Activitylogs.Add(log);
                             db.SaveChanges();
-
                         }
                         logger.Info("The No of days and path: " + newSpan);
                     }
@@ -254,7 +257,7 @@ namespace BBGCombination.Domain.Service
                     {
                         EmailNotify em = new EmailNotify()
                         {
-                            EmailAddress = "",
+                            EmailAddress = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                             EmailDateSent = DateTime.Now,
                             EmailReceived = true,
                             EmailSent = true,
@@ -280,7 +283,7 @@ namespace BBGCombination.Domain.Service
                         db.SaveChanges();
                         EmailNotify emp = new EmailNotify
                         {
-                            EmailAddress = "",
+                            EmailAddress = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                             EmailDateSent = DateTime.Now,
                             EmailReceived = false,
                             EmailSent = false,

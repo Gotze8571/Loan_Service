@@ -108,6 +108,10 @@
     <Compile Include="Migrations\202103101054496_FourthMigration.designer.cs">
       <DependentUpon>202103101054496_FourthMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103110934500_FifthMigration.cs" />
+    <Compile Include="Migrations\202103110934500_FifthMigration.designer.cs">
+      <DependentUpon>202103110934500_FifthMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -148,6 +152,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103101054496_FourthMigration.resx">
       <DependentUpon>202103101054496_FourthMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103110934500_FifthMigration.resx">
+      <DependentUpon>202103110934500_FifthMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

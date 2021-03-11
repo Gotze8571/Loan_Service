@@ -23,9 +23,9 @@ namespace BBGCombination.Domain
             //});
             var exitCode = HostFactory.Run(x =>
             {
-                x.Service<NotifyService>(s =>
+                x.Service<EmailService>(s =>
                 {
-                    s.ConstructUsing(v => new NotifyService());
+                    s.ConstructUsing(v => new EmailService());
                     s.WhenStarted(v => v.Start());
                     s.WhenStopped(v => v.Stop());
                 });
