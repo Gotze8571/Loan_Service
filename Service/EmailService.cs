@@ -166,8 +166,7 @@ namespace BBGCombination.Domain.Service
                             db.Activitylogs.Add(log);
                             db.SaveChanges();
                         }
-                            
-                       
+
                         logger.Info("Path for one month:" + newSpan);
                     }
                     else if (newSpan <= 14 && newSpan >= 15)
