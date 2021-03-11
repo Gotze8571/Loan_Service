@@ -100,6 +100,14 @@
     <Compile Include="Migrations\202103050854183_SecondMigration.designer.cs">
       <DependentUpon>202103050854183_SecondMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103101004045_ThirdMigration.cs" />
+    <Compile Include="Migrations\202103101004045_ThirdMigration.designer.cs">
+      <DependentUpon>202103101004045_ThirdMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103101054496_FourthMigration.cs" />
+    <Compile Include="Migrations\202103101054496_FourthMigration.designer.cs">
+      <DependentUpon>202103101054496_FourthMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -134,6 +142,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103050854183_SecondMigration.resx">
       <DependentUpon>202103050854183_SecondMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103101004045_ThirdMigration.resx">
+      <DependentUpon>202103101004045_ThirdMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103101054496_FourthMigration.resx">
+      <DependentUpon>202103101054496_FourthMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -12,6 +12,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace BBGCombination.Domain.Service
 {
@@ -21,22 +22,64 @@ namespace BBGCombination.Domain.Service
         private static Logger logger = LogManager.GetCurrentClassLogger();
         LoanCustomerDB database = new LoanCustomerDB();
         DataConnectorContext context = new DataConnectorContext();
+        public System.Timers.Timer thisTimer;
         /// <summary>
         ///  Calling all Loan Types
         /// </summary>
         public EmailService()
         {
-            GetTermLoan();
-            //GetLeaseLoan();
-           // GetOverdraftLoan();
+            thisTimer = new Timer(1000)
+            {
+                AutoReset = true
+            };
+            thisTimer.Elapsed += thistTimer_Tick;
+            logger.Info(thisTimer);
+            // send mail to the customer email address.
+            var recepientMail = ConfigurationManager.AppSettings["EmailRecepient"].ToString();
+            var result = SendTermLoanEmail(database.GetTermLoanTestData());
+           // var result2 = SendLeaseFinanceLoanEmail(database.GetLeaseLoanCustomerDetail());
+            var result3 = SendOverdraftLoanEmail(database.GetOverdraftLoanCustomerDetail());
+
+            // GetTermLoan();
+            // GetLeaseLoan();
+            // GetOverdraftLoan();
         }
+        public void Start()
+        {
+            logger.Info("Service Start!!");
+           
+            thisTimer.Start();
+
+        }
+        public void Stop()
+        {
+            thisTimer.Stop();
+            logger.Info("Service Stopped!!");
+        }
+        private void thistTimer_Tick(object sender, ElapsedEventArgs e)
+        {
+            try
+            {
+                // call Email Sevice
+                logger.Info("Service running!!");
+                var result = new EmailService();
+                thisTimer.Stop();
+                thisTimer.Dispose();
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex);
+            }
+        }
+
         // Send mail for Term Loan
-        public static string SendTermLoanEmail(List<CustomerDetails> emailDetail)
+        public static string SendTermLoanEmail(List<TermLoan> emailDetail)
         {
             var CcAddress = "";
             var MailSubject = ConfigurationManager.AppSettings["MailSubject"].ToString();
             var IsBodyHtml = true;
             var Result = "";
+
             SmtpClient obj = new SmtpClient();
             MailMessage msg = new MailMessage();
 
@@ -83,8 +126,8 @@ namespace BBGCombination.Domain.Service
                   
                     DateTime todayDate = new DateTime();
                     todayDate = DateTime.Now;
-                    // var newSpan = (sampleDate - todayDate).Days;
-                    var newSpan = 0;
+                    var newSpan = (sampleDate - todayDate).Days;
+                   // var newSpan = 0;
                     logger.Info("No of days to send mail: " + newSpan);
 
                     //var preConc = (newSpan.TotalDays) / 30;
@@ -101,41 +144,84 @@ namespace BBGCombination.Domain.Service
                                 Activity = "Expired Term Loan.",
                                 ActivityDate = DateTime.Now
                             };
+                            db.Activitylogs.Add(log);
+                            db.SaveChanges();
+
                         }
-                        
-                            
                         logger.Info("The No of days and path: " + newSpan);
                     }
                     else if (newSpan <= 7 && newSpan >= 6)
                     {
                         stringPath = path2;
-                        ActivityLog log = new ActivityLog
+                        using (DataConnectorContext db = new DataConnectorContext())
                         {
-                            Activity = "7 days Expired Term Loan.",
-                            ActivityDate = DateTime.Now
-                        };
+                            ActivityLog log = new ActivityLog
+                            {
+                                Activity = "7 days Expired Term Loan.",
+                                ActivityDate = DateTime.Now
+                            };
+                            db.Activitylogs.Add(log);
+                            db.SaveChanges();
+                        }
+                            
+                       
                         logger.Info("Path for one month:" + newSpan);
                     }
                     else if (newSpan <= 14 && newSpan >= 15)
                     {
                         stringPath = path3;
+                        using (DataConnectorContext db = new DataConnectorContext())
+                        {
+                            ActivityLog log = new ActivityLog()
+                            {
+                                Activity = "15 days Term Loan Expiration Notification!!",
+                                ActivityDate = DateTime.Now
+                            };
+                            db.Activitylogs.Add(log);
+                            db.SaveChanges();
+                        }
                         //  Logger.Info("Path for Two months or more:" + path2);
                     }
                     else if(newSpan <= 30 && newSpan >= 31)
                     {
                         stringPath = path4;
+                        using (DataConnectorContext db = new DataConnectorContext())
+                        {
+                            ActivityLog log = new ActivityLog
+                            {
+                                Activity = "30 days Term Loan Expiration Notification!!",
+                                ActivityDate = DateTime.Now
+                            };
+                            db.Activitylogs.Add(log);
+                            db.SaveChanges();
+                        }
                     }
                     else if (newSpan <= -1 && newSpan >= -2)
                     {
                         stringPath = path5;
+                        using (DataConnectorContext db = new DataConnectorContext())
+                        {
+                            ActivityLog log = new ActivityLog
+                            {
+                                Activity = "Overdue Term Loan Expiration Notification",
+                                ActivityDate = DateTime.Now
+                            };
+                            db.Activitylogs.Add(log);
+                            db.SaveChanges();
+                        }
                     }
                     else
                     {
-                        ActivityLog ac = new ActivityLog
+                        using (DataConnectorContext db = new DataConnectorContext())
                         {
-                            Activity = "less days or more days",
-                            ActivityDate = DateTime.Now
-                        };
+                            ActivityLog ac = new ActivityLog
+                            {
+                                Activity = "Days of Term Loan Expiration not within Conditional Date!!",
+                                ActivityDate = DateTime.Now
+                            };
+                            db.Activitylogs.Add(ac);
+                            db.SaveChanges();
+                        }
                     }
                   
                     StreamReader str = new StreamReader(stringPath);
@@ -144,13 +230,13 @@ namespace BBGCombination.Domain.Service
                     MailText = MailText.Replace("{CustomerName}", thisEmailDetail.AccountName);
                     MailText = MailText.Replace("{AccountNumber}", thisEmailDetail.AccountNumber);
                     MailText = MailText.Replace("{DueDate}", thisEmailDetail.DueDate);
-                    MailText = MailText.Replace("{DueAmt}", Convert.ToDouble(thisEmailDetail.DueAmt).ToString());
-                    MailText = MailText.Replace("{DueInDays}", (thisEmailDetail.DueInDays).ToString());
+                    MailText = MailText.Replace("{DueAmt}", Convert.ToDouble(thisEmailDetail.DueAmount).ToString());
+                   // MailText = MailText.Replace("{DueInDays}", (thisEmailDetail.DueInDays).ToString());
                     MailText = MailText.Replace("{OutstandingAmt}", Convert.ToDouble(thisEmailDetail.OutstandingAmt).ToString());
                     MailText = MailText.Replace("{PastDueObligationAmt}", Convert.ToDouble(thisEmailDetail.PastDueObligationAmt).ToString());
-                    MailText = MailText.Replace("{CustomerEmail}", thisEmailDetail.CustomerEmail);
-                    MailText = MailText.Replace("{ExcessAmt}", thisEmailDetail.ExcessAmt);
-                    MailText = MailText.Replace("{AgreeMonthlyVol}", thisEmailDetail.AgreeMonthlyVol);
+                 //  MailText = MailText.Replace("{CustomerEmail}", thisEmailDetail.CustomerEmail);
+                  //  MailText = MailText.Replace("{ExcessAmt}", thisEmailDetail.ExcessAmt);
+                  //  MailText = MailText.Replace("{AgreeMonthlyVol}", thisEmailDetail.AgreeMonthlyVol);
 
                     AlternateView plainView = AlternateView.CreateAlternateViewFromString(MailText, null, "text/html");
 
@@ -166,11 +252,16 @@ namespace BBGCombination.Domain.Service
                     Result = "Successful";
                     using (DataConnectorContext db = new DataConnectorContext())
                     {
-                        ActivityLog log = new ActivityLog()
+                        EmailNotify em = new EmailNotify()
                         {
-                            Activity = "Successful",
-                            ActivityDate = DateTime.Now
+                            EmailAddress = "",
+                            EmailDateSent = DateTime.Now,
+                            EmailReceived = true,
+                            EmailSent = true,
+                            EmailDateReceived = DateTime.Now
                         };
+                        db.EmailNotifies.Add(em);
+                        db.SaveChanges();
                         
                     }
                         logger.Info("The mail is: " + Result);
@@ -178,6 +269,27 @@ namespace BBGCombination.Domain.Service
                 catch (Exception ex)
                 {
                     Result = "failed" + ex.Message;
+                    using (DataConnectorContext db = new DataConnectorContext())
+                    {
+                        ErrorLog err = new ErrorLog
+                        {
+                            ErrorName = "Email failed!!",
+                            ErrorDate = DateTime.Now
+                        };
+                        db.ErrorLogs.Add(err);
+                        db.SaveChanges();
+                        EmailNotify emp = new EmailNotify
+                        {
+                            EmailAddress = "",
+                            EmailDateSent = DateTime.Now,
+                            EmailReceived = false,
+                            EmailSent = false,
+                            EmailDateReceived = DateTime.Now
+
+                        };
+                        db.EmailNotifies.Add(emp);
+                        db.SaveChanges();
+                    }
                 }
             }
             return null;
@@ -515,7 +627,8 @@ namespace BBGCombination.Domain.Service
         // Send mail Term Loan Method
         public string GetTermLoan()
         {
-            var result = SendTermLoanEmail(database.GetTermLoanCustomerDetail());
+           // var result = SendTermLoanEmail(database.GetTermLoanCustomerDetail());
+            var result = SendTermLoanEmail(database.GetTermLoanTestData());
             logger.Info("Connect email service to finacle!!");
             return result;
         }
