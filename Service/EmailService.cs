@@ -28,7 +28,7 @@ namespace BBGCombination.Domain.Service
         /// </summary>
         public EmailService()
         {
-            thisTimer = new Timer(1000)
+            thisTimer = new Timer(1000000)
             {
                 AutoReset = true
             };
@@ -117,15 +117,21 @@ namespace BBGCombination.Domain.Service
                     msg.Subject = MailSubject;
 
                     dynamic emailServer = ConfigurationManager.AppSettings["EmailServer"];
+                    
 
-                    string path = ConfigurationManager.AppSettings["ExpiredTermLoanTemplatePath"]; // Directory.GetCurrentDirectory() + "\\EmailTemplate\\ConcessTemp.html";// 
-                    string path2 = ConfigurationManager.AppSettings["7daysTermLoanTemplatePath"]; //Directory.GetCurrentDirectory() + "\\EmailTemplate\\TwoMonthsConcess.html"; //
-                    string path3 = ConfigurationManager.AppSettings["14daysTermLoanTemplatePath"];
-                    string path4 = ConfigurationManager.AppSettings["30daysTermLoanTemplatePath"];
-                    string path5 = ConfigurationManager.AppSettings["OverdueTermLoanTemplatePath"];
                     string rootPath = Directory.GetCurrentDirectory();
+                    string path = rootPath + "\\Notice-of-Overdue-Loan-Repayment.html";
 
-                   
+                   // string path = ConfigurationManager.AppSettings["ExpiredTermLoanTemplatePath"];  
+                   // string path2 = ConfigurationManager.AppSettings["7daysTermLoanTemplatePath"];
+                    string path2 = rootPath + "\\Term-Loan-Notification-Urgent.html";
+                   // string path3 = ConfigurationManager.AppSettings["14daysTermLoanTemplatePath"];
+                    string path3 = rootPath + "\\Term-Loan-Notification-Follow-Up.html";
+                   // string path4 = ConfigurationManager.AppSettings["30daysTermLoanTemplatePath"];
+                    string path4 = rootPath + "\\Term-Loan-Notification.html";
+                    //string path5 = ConfigurationManager.AppSettings["OverdueTermLoanTemplatePath"];
+                    string path5 = rootPath + "\\Notice-of-Overdue-Loan-Repayment.html";
+
                     DateTime sampleDate = DateTime.Parse(thisEmailDetail.DueDate);
                   
                     DateTime todayDate = new DateTime();
@@ -148,7 +154,6 @@ namespace BBGCombination.Domain.Service
                                 Activity = "Expired Term Loan.",
                                 EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                                 ActivityDate = DateTime.Now
-
                             };
                             db.Activitylogs.Add(log);
                             db.SaveChanges();
@@ -188,7 +193,7 @@ namespace BBGCombination.Domain.Service
                         }
                         //  Logger.Info("Path for Two months or more:" + path2);
                     }
-                    else if(newSpan <= 30 && newSpan >= 31)
+                    else if(newSpan >= 30 && newSpan <= 31)
                     {
                         stringPath = path4;
                         using (DataConnectorContext db = new DataConnectorContext())
@@ -232,20 +237,20 @@ namespace BBGCombination.Domain.Service
                             db.SaveChanges();
                         }
                     }
+                    
                   
                     StreamReader str = new StreamReader(stringPath);
+                   
                     string MailText = str.ReadToEnd();
                     str.Close();
                     MailText = MailText.Replace("{CustomerName}", thisEmailDetail.AccountName);
                     MailText = MailText.Replace("{AccountNumber}", thisEmailDetail.AccountNumber);
                     MailText = MailText.Replace("{DueDate}", thisEmailDetail.DueDate);
                     MailText = MailText.Replace("{DueAmt}", Convert.ToDouble(thisEmailDetail.DueAmount).ToString());
-                   // MailText = MailText.Replace("{DueInDays}", (thisEmailDetail.DueInDays).ToString());
+                  
                     MailText = MailText.Replace("{OutstandingAmt}", Convert.ToDouble(thisEmailDetail.OutstandingAmt).ToString());
                     MailText = MailText.Replace("{PastDueObligationAmt}", Convert.ToDouble(thisEmailDetail.PastDueObligationAmt).ToString());
-                 //  MailText = MailText.Replace("{CustomerEmail}", thisEmailDetail.CustomerEmail);
-                  //  MailText = MailText.Replace("{ExcessAmt}", thisEmailDetail.ExcessAmt);
-                  //  MailText = MailText.Replace("{AgreeMonthlyVol}", thisEmailDetail.AgreeMonthlyVol);
+                
 
                     AlternateView plainView = AlternateView.CreateAlternateViewFromString(MailText, null, "text/html");
 
@@ -275,7 +280,8 @@ namespace BBGCombination.Domain.Service
                         db.SaveChanges();
                         
                     }
-                        logger.Info("The mail is: " + Result);
+                    logger.Info("The mail is: " + Result);
+                    logger.Info("Success" + ConfigurationManager.AppSettings["EmailRecepient"].ToString());
                 }
                 catch (Exception ex)
                 {
@@ -304,6 +310,7 @@ namespace BBGCombination.Domain.Service
                         db.EmailNotifies.Add(emp);
                         db.SaveChanges();
                     }
+                    logger.Error(ex);
                 }
             }
             return null;
@@ -348,12 +355,16 @@ namespace BBGCombination.Domain.Service
                     msg.Subject = MailSubject;
 
                     dynamic emailServer = ConfigurationManager.AppSettings["EmailServer"];
-
-                    string path = ConfigurationManager.AppSettings["OverdueLeaseFinanceLoanTemplatePath"]; // Directory.GetCurrentDirectory() + "\\EmailTemplate\\ConcessTemp.html";// 
-                    string path2 = ConfigurationManager.AppSettings["7daysLeaseFinanceLoanTemplatePath"]; //Directory.GetCurrentDirectory() + "\\EmailTemplate\\TwoMonthsConcess.html"; //
-                    string path3 = ConfigurationManager.AppSettings["14daysLeaseFinanceLoanTemplatePath"];
-                    string path4 = ConfigurationManager.AppSettings["30daysLeaseFinanceLoanTemplatePath"];
                     string rootPath = Directory.GetCurrentDirectory();
+
+                    string path = rootPath + "\\Lease-Finance-Payment-Notification-Overdue.html";
+                    //string path2 = ConfigurationManager.AppSettings["7daysLeaseFinanceLoanTemplatePath"];
+                    string path2 = rootPath + "\\Lease-Finance-Payment-Notification.html";
+                   // string path3 = ConfigurationManager.AppSettings["14daysLeaseFinanceLoanTemplatePath"];
+                    string path3 = rootPath + "\\Lease-Finance-Payment-Notification-FollowUp.html";
+                   // string path4 = ConfigurationManager.AppSettings["30daysLeaseFinanceLoanTemplatePath"];
+                    string path4 = rootPath + "\\Lease-Finance-Payment-Notification-30days.html";
+
 
 
                     DateTime sampleDate = DateTime.Parse(thisEmailDetail.DueDate);
@@ -371,6 +382,7 @@ namespace BBGCombination.Domain.Service
                         ActivityLog logPath = new ActivityLog
                         {
                             Activity = "Overdue Lease Finance.",
+                            EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                             ActivityDate = DateTime.Now
                         };
                         context.Activitylogs.Add(logPath);
@@ -383,6 +395,7 @@ namespace BBGCombination.Domain.Service
                         ActivityLog logPath2 = new ActivityLog
                         {
                             Activity = "7 days Lease Loan Finance. ",
+                            EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                             ActivityDate = DateTime.Now
                         };
                         context.Activitylogs.Add(logPath2);
@@ -395,6 +408,7 @@ namespace BBGCombination.Domain.Service
                         ActivityLog logPath3 = new ActivityLog
                         {
                             Activity = "15 days Lease Loan Finance.",
+                            EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                             ActivityDate = DateTime.Now
                         };
                         context.Activitylogs.Add(logPath3);
@@ -407,6 +421,7 @@ namespace BBGCombination.Domain.Service
                         ActivityLog logPath4 = new ActivityLog
                         {
                             Activity = "30 days Lease Loan Finance.",
+                            EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                             ActivityDate = DateTime.Now
                         };
                         context.Activitylogs.Add(logPath4);
