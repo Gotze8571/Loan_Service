@@ -112,6 +112,18 @@
     <Compile Include="Migrations\202103110934500_FifthMigration.designer.cs">
       <DependentUpon>202103110934500_FifthMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103111724392_SixthMigration.cs" />
+    <Compile Include="Migrations\202103111724392_SixthMigration.designer.cs">
+      <DependentUpon>202103111724392_SixthMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103120916078_SeventhMigration.cs" />
+    <Compile Include="Migrations\202103120916078_SeventhMigration.designer.cs">
+      <DependentUpon>202103120916078_SeventhMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103120920449_EigthMigration.cs" />
+    <Compile Include="Migrations\202103120920449_EigthMigration.designer.cs">
+      <DependentUpon>202103120920449_EigthMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -263,6 +275,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103110934500_FifthMigration.resx">
       <DependentUpon>202103110934500_FifthMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103111724392_SixthMigration.resx">
+      <DependentUpon>202103111724392_SixthMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103120916078_SeventhMigration.resx">
+      <DependentUpon>202103120916078_SeventhMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103120920449_EigthMigration.resx">
+      <DependentUpon>202103120920449_EigthMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

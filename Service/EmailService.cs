@@ -146,7 +146,9 @@ namespace BBGCombination.Domain.Service
                             ActivityLog log = new ActivityLog
                             {
                                 Activity = "Expired Term Loan.",
+                                EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                                 ActivityDate = DateTime.Now
+
                             };
                             db.Activitylogs.Add(log);
                             db.SaveChanges();
@@ -161,6 +163,7 @@ namespace BBGCombination.Domain.Service
                             ActivityLog log = new ActivityLog
                             {
                                 Activity = "7 days Expired Term Loan.",
+                                EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                                 ActivityDate = DateTime.Now
                             };
                             db.Activitylogs.Add(log);
@@ -169,7 +172,7 @@ namespace BBGCombination.Domain.Service
 
                         logger.Info("Path for one month:" + newSpan);
                     }
-                    else if (newSpan <= 14 && newSpan >= 15)
+                    else if (newSpan <= 14 && newSpan >= 13)
                     {
                         stringPath = path3;
                         using (DataConnectorContext db = new DataConnectorContext())
@@ -177,6 +180,7 @@ namespace BBGCombination.Domain.Service
                             ActivityLog log = new ActivityLog()
                             {
                                 Activity = "15 days Term Loan Expiration Notification!!",
+                                EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                                 ActivityDate = DateTime.Now
                             };
                             db.Activitylogs.Add(log);
@@ -192,6 +196,7 @@ namespace BBGCombination.Domain.Service
                             ActivityLog log = new ActivityLog
                             {
                                 Activity = "30 days Term Loan Expiration Notification!!",
+                                EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                                 ActivityDate = DateTime.Now
                             };
                             db.Activitylogs.Add(log);
@@ -206,6 +211,7 @@ namespace BBGCombination.Domain.Service
                             ActivityLog log = new ActivityLog
                             {
                                 Activity = "Overdue Term Loan Expiration Notification",
+                                EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                                 ActivityDate = DateTime.Now
                             };
                             db.Activitylogs.Add(log);
@@ -219,6 +225,7 @@ namespace BBGCombination.Domain.Service
                             ActivityLog ac = new ActivityLog
                             {
                                 Activity = "Days of Term Loan Expiration not within Conditional Date!!",
+                                EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                                 ActivityDate = DateTime.Now
                             };
                             db.Activitylogs.Add(ac);
@@ -256,11 +263,13 @@ namespace BBGCombination.Domain.Service
                     {
                         EmailNotify em = new EmailNotify()
                         {
-                            EmailAddress = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                            EmailAddress = ConfigurationManager.AppSettings["EmailFrom"].ToString(),
                             EmailDateSent = DateTime.Now,
                             EmailReceived = true,
                             EmailSent = true,
-                            EmailDateReceived = DateTime.Now
+                            EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                            EmailDateReceived = DateTime.Now,
+                            Status = "Success"
                         };
                         db.EmailNotifies.Add(em);
                         db.SaveChanges();
@@ -276,6 +285,7 @@ namespace BBGCombination.Domain.Service
                         ErrorLog err = new ErrorLog
                         {
                             ErrorName = "Email failed!!",
+                            EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                             ErrorDate = DateTime.Now
                         };
                         db.ErrorLogs.Add(err);
@@ -286,7 +296,9 @@ namespace BBGCombination.Domain.Service
                             EmailDateSent = DateTime.Now,
                             EmailReceived = false,
                             EmailSent = false,
-                            EmailDateReceived = DateTime.Now
+                            EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                            EmailDateReceived = DateTime.Now,
+                            Status = "Failed"
 
                         };
                         db.EmailNotifies.Add(emp);
@@ -439,26 +451,51 @@ namespace BBGCombination.Domain.Service
                     Result = "Successful";
                     //Logger.Info("The mail is: " + Result);
 
-                    ActivityLog log = new ActivityLog
+                    using (DataConnectorContext db = new DataConnectorContext())
                     {
-                        Activity = "Successful!!",
-                        ActivityDate = DateTime.Now
-                    };
-                    context.Activitylogs.Add(log);
-                    context.SaveChanges();
+                        EmailNotify em = new EmailNotify()
+                        {
+                            EmailAddress = ConfigurationManager.AppSettings["EmailFrom"].ToString(),
+                            EmailDateSent = DateTime.Now,
+                            EmailReceived = true,
+                            EmailSent = true,
+                            EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                            EmailDateReceived = DateTime.Now,
+                            Status = "Success"
+                        };
+                        db.EmailNotifies.Add(em);
+                        db.SaveChanges();
+
+                    }
                     logger.Info("The email sent was successful.");
                 }
                 catch (Exception ex)
                 {
                     Result = "failed" + ex.Message;
-                    ErrorLog error = new ErrorLog
+                    using (DataConnectorContext db = new DataConnectorContext())
                     {
-                        ErrorName = "Email sent failed.",
-                        ErrorDate = DateTime.Now
-                    };
-                    context.ErrorLogs.Add(error);
-                    context.SaveChanges();
-                    logger.Info("The email sent failed!!");
+                        ErrorLog err = new ErrorLog
+                        {
+                            ErrorName = "Email failed!!",
+                            EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                            ErrorDate = DateTime.Now
+                        };
+                        db.ErrorLogs.Add(err);
+                        db.SaveChanges();
+                        EmailNotify emp = new EmailNotify
+                        {
+                            EmailAddress = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                            EmailDateSent = DateTime.Now,
+                            EmailReceived = false,
+                            EmailSent = false,
+                            EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                            EmailDateReceived = DateTime.Now,
+                            Status = "Failed"
+
+                        };
+                        db.EmailNotifies.Add(emp);
+                        db.SaveChanges();
+                    }
                 }
             }
             return null;
@@ -607,11 +644,51 @@ namespace BBGCombination.Domain.Service
                     obj.Host = emailServer;
                     obj.Send(msg);
                     Result = "Successful";
+                    using (DataConnectorContext db = new DataConnectorContext())
+                    {
+                        EmailNotify em = new EmailNotify()
+                        {
+                            EmailAddress = ConfigurationManager.AppSettings["EmailFrom"].ToString(),
+                            EmailDateSent = DateTime.Now,
+                            EmailReceived = true,
+                            EmailSent = true,
+                            EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                            EmailDateReceived = DateTime.Now,
+                            Status = "Success"
+                        };
+                        db.EmailNotifies.Add(em);
+                        db.SaveChanges();
+
+                    }
                     //Logger.Info("The mail is: " + Result);
                 }
                 catch (Exception ex)
                 {
                     Result = "failed" + ex.Message;
+                    using (DataConnectorContext db = new DataConnectorContext())
+                    {
+                        ErrorLog err = new ErrorLog
+                        {
+                            ErrorName = "Email failed!!",
+                            EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                            ErrorDate = DateTime.Now
+                        };
+                        db.ErrorLogs.Add(err);
+                        db.SaveChanges();
+                        EmailNotify emp = new EmailNotify
+                        {
+                            EmailAddress = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                            EmailDateSent = DateTime.Now,
+                            EmailReceived = false,
+                            EmailSent = false,
+                            EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                            EmailDateReceived = DateTime.Now,
+                            Status = "Failed"
+
+                        };
+                        db.EmailNotifies.Add(emp);
+                        db.SaveChanges();
+                    }
                 }
             }
             return null;
