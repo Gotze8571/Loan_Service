@@ -16,7 +16,6 @@ using System.Timers;
 
 namespace BBGCombination.Domain.Service
 {
-  
     public class EmailService
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
@@ -28,7 +27,7 @@ namespace BBGCombination.Domain.Service
         /// </summary>
         public EmailService()
         {
-            thisTimer = new Timer(1000000)
+            thisTimer = new Timer(10000000)
             {
                 AutoReset = true
             };
@@ -36,9 +35,14 @@ namespace BBGCombination.Domain.Service
             logger.Info(thisTimer);
             // send mail to the customer email address.
             var recepientMail = ConfigurationManager.AppSettings["EmailRecepient"].ToString();
+
             var result = SendTermLoanEmail(database.GetTermLoanTestData());
-           // var result2 = SendLeaseFinanceLoanEmail(database.GetLeaseLoanCustomerDetail());
+            // var result = SendTermLoanEmail(database.GetTermLoanCustomerDetail());
+            var result2 = SendLeaseFinanceLoanEmail(database.GetLeaseLoanCustomerDetail());
             var result3 = SendOverdraftLoanEmail(database.GetOverdraftLoanCustomerDetail());
+            Console.WriteLine("Service timer checker");
+
+          
 
             // GetTermLoan();
             // GetLeaseLoan();
@@ -47,7 +51,11 @@ namespace BBGCombination.Domain.Service
         public void Start()
         {
             logger.Info("Service Start!!");
-           
+
+            thisTimer.Elapsed += thistTimer_Tick;
+            thisTimer.AutoReset = true;
+            thisTimer.Enabled = true;
+
             thisTimer.Start();
 
         }
@@ -62,7 +70,9 @@ namespace BBGCombination.Domain.Service
             {
                 // call Email Sevice
                 logger.Info("Service running!!");
-                var result = new EmailService();
+                //var result = new EmailService();
+
+               
                 thisTimer.Stop();
                 thisTimer.Dispose();
             }
@@ -125,8 +135,9 @@ namespace BBGCombination.Domain.Service
                    // string path = ConfigurationManager.AppSettings["ExpiredTermLoanTemplatePath"];  
                    // string path2 = ConfigurationManager.AppSettings["7daysTermLoanTemplatePath"];
                     string path2 = rootPath + "\\Term-Loan-Notification-Urgent.html";
-                   // string path3 = ConfigurationManager.AppSettings["14daysTermLoanTemplatePath"];
-                    string path3 = rootPath + "\\Term-Loan-Notification-Follow-Up.html";
+                   
+                   // string path3 = rootPath + "\\Term-Loan-Notification-Follow-Up.html";
+                    string path3 = rootPath + "\\Term-Loan\\Term-Loan-Notification-Follow-Up";
                    // string path4 = ConfigurationManager.AppSettings["30daysTermLoanTemplatePath"];
                     string path4 = rootPath + "\\Term-Loan-Notification.html";
                     //string path5 = ConfigurationManager.AppSettings["OverdueTermLoanTemplatePath"];
@@ -153,6 +164,7 @@ namespace BBGCombination.Domain.Service
                             {
                                 Activity = "Expired Term Loan.",
                                 EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                                LoanDaysLeft = newSpan,
                                 ActivityDate = DateTime.Now
                             };
                             db.Activitylogs.Add(log);
@@ -169,13 +181,14 @@ namespace BBGCombination.Domain.Service
                             {
                                 Activity = "7 days Expired Term Loan.",
                                 EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                                LoanDaysLeft = newSpan,
                                 ActivityDate = DateTime.Now
                             };
                             db.Activitylogs.Add(log);
                             db.SaveChanges();
                         }
 
-                        logger.Info("Path for one month:" + newSpan);
+                        logger.Info("Path for 7 days:" + newSpan);
                     }
                     else if (newSpan <= 14 && newSpan >= 13)
                     {
@@ -186,6 +199,7 @@ namespace BBGCombination.Domain.Service
                             {
                                 Activity = "15 days Term Loan Expiration Notification!!",
                                 EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                                LoanDaysLeft = newSpan,
                                 ActivityDate = DateTime.Now
                             };
                             db.Activitylogs.Add(log);
@@ -202,6 +216,7 @@ namespace BBGCombination.Domain.Service
                             {
                                 Activity = "30 days Term Loan Expiration Notification!!",
                                 EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                                LoanDaysLeft = newSpan,
                                 ActivityDate = DateTime.Now
                             };
                             db.Activitylogs.Add(log);
@@ -217,6 +232,7 @@ namespace BBGCombination.Domain.Service
                             {
                                 Activity = "Overdue Term Loan Expiration Notification",
                                 EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                                LoanDaysLeft = newSpan,
                                 ActivityDate = DateTime.Now
                             };
                             db.Activitylogs.Add(log);
@@ -231,13 +247,13 @@ namespace BBGCombination.Domain.Service
                             {
                                 Activity = "Days of Term Loan Expiration not within Conditional Date!!",
                                 EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                                LoanDaysLeft = newSpan,
                                 ActivityDate = DateTime.Now
                             };
                             db.Activitylogs.Add(ac);
                             db.SaveChanges();
                         }
                     }
-                    
                   
                     StreamReader str = new StreamReader(stringPath);
                    
@@ -278,10 +294,10 @@ namespace BBGCombination.Domain.Service
                         };
                         db.EmailNotifies.Add(em);
                         db.SaveChanges();
-                        
                     }
                     logger.Info("The mail is: " + Result);
                     logger.Info("Success" + ConfigurationManager.AppSettings["EmailRecepient"].ToString());
+                    Console.ReadLine();
                 }
                 catch (Exception ex)
                 {
@@ -383,6 +399,7 @@ namespace BBGCombination.Domain.Service
                         {
                             Activity = "Overdue Lease Finance.",
                             EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                            LoanDaysLeft = newSpan,
                             ActivityDate = DateTime.Now
                         };
                         context.Activitylogs.Add(logPath);
@@ -396,6 +413,7 @@ namespace BBGCombination.Domain.Service
                         {
                             Activity = "7 days Lease Loan Finance. ",
                             EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                            LoanDaysLeft = newSpan,
                             ActivityDate = DateTime.Now
                         };
                         context.Activitylogs.Add(logPath2);
@@ -409,6 +427,7 @@ namespace BBGCombination.Domain.Service
                         {
                             Activity = "15 days Lease Loan Finance.",
                             EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                            LoanDaysLeft = newSpan,
                             ActivityDate = DateTime.Now
                         };
                         context.Activitylogs.Add(logPath3);
@@ -422,6 +441,7 @@ namespace BBGCombination.Domain.Service
                         {
                             Activity = "30 days Lease Loan Finance.",
                             EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                            LoanDaysLeft = newSpan,
                             ActivityDate = DateTime.Now
                         };
                         context.Activitylogs.Add(logPath4);
@@ -555,11 +575,15 @@ namespace BBGCombination.Domain.Service
                     msg.Subject = MailSubject;
 
                     dynamic emailServer = ConfigurationManager.AppSettings["EmailServer"];
-
-                    string path = ConfigurationManager.AppSettings["ExpiredOverdraftLoanTemplatePath"]; 
-                    string path2 = ConfigurationManager.AppSettings["OverdraftLimitTemplatePath"]; 
-                    string path3 = ConfigurationManager.AppSettings["FollowUpOverdraftLoanTemplatePath"];
                     string rootPath = Directory.GetCurrentDirectory();
+                    //string path = ConfigurationManager.AppSettings["ExpiredOverdraftLoanTemplatePath"];
+                    string path = rootPath + "\\Important-Notice-On-Your-Overdraft.html";
+
+                    //string path2 = ConfigurationManager.AppSettings["OverdraftLimitTemplatePath"];
+                    string path2 = rootPath + "\\Important-Notice-On-Your-Overdraft.html";
+                    //string path3 = ConfigurationManager.AppSettings["FollowUpOverdraftLoanTemplatePath"];
+                    string path3 = rootPath + "\\Important-Notice-On-Your-Overdraft-Follow-Up.html";
+                    
 
 
                     DateTime sampleDate = DateTime.Parse(thisEmailDetail.DueDate);
@@ -580,6 +604,8 @@ namespace BBGCombination.Domain.Service
                             ActivityLog ac = new ActivityLog
                             {
                                 Activity = "Expired Overdraft Loan Remider",
+                                EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                                LoanDaysLeft = newSpan,
                                 ActivityDate = DateTime.Now
                             };
                             db.Activitylogs.Add(ac);
@@ -596,6 +622,8 @@ namespace BBGCombination.Domain.Service
                             ActivityLog ac = new ActivityLog
                             {
                                 Activity = "Exceeded Overdraft Loan Reminder",
+                                EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                                LoanDaysLeft = newSpan,
                                 ActivityDate = DateTime.Now
                             };
                             db.Activitylogs.Add(ac);
@@ -612,6 +640,8 @@ namespace BBGCombination.Domain.Service
                             ActivityLog ac = new ActivityLog
                             {
                                 Activity = "Follow Up Overdraft Loan Reminder",
+                                EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                                LoanDaysLeft = newSpan,
                                 ActivityDate = DateTime.Now
                             };
                             db.Activitylogs.Add(ac);
@@ -626,6 +656,8 @@ namespace BBGCombination.Domain.Service
                             ActivityLog ac = new ActivityLog
                             {
                                 Activity = "Overdraft out of Date Range!!",
+                                EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                                LoanDaysLeft = newSpan,
                                 ActivityDate = DateTime.Now
                             };
                             db.Activitylogs.Add(ac);

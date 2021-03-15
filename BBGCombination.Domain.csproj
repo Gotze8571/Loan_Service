@@ -124,6 +124,14 @@
     <Compile Include="Migrations\202103120920449_EigthMigration.designer.cs">
       <DependentUpon>202103120920449_EigthMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103142343165_NinthMigration.cs" />
+    <Compile Include="Migrations\202103142343165_NinthMigration.designer.cs">
+      <DependentUpon>202103142343165_NinthMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103150955166_TenthMigration.cs" />
+    <Compile Include="Migrations\202103150955166_TenthMigration.designer.cs">
+      <DependentUpon>202103150955166_TenthMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -284,6 +292,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103120920449_EigthMigration.resx">
       <DependentUpon>202103120920449_EigthMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103142343165_NinthMigration.resx">
+      <DependentUpon>202103142343165_NinthMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103150955166_TenthMigration.resx">
+      <DependentUpon>202103150955166_TenthMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
