@@ -27,7 +27,7 @@ namespace BBGCombination.Domain.Service
         /// </summary>
         public EmailService()
         {
-            thisTimer = new Timer(10000000)
+            thisTimer = new Timer(86400)
             {
                 AutoReset = true
             };
@@ -36,11 +36,12 @@ namespace BBGCombination.Domain.Service
             // send mail to the customer email address.
             var recepientMail = ConfigurationManager.AppSettings["EmailRecepient"].ToString();
 
-            var result = SendTermLoanEmail(database.GetTermLoanTestData());
-            // var result = SendTermLoanEmail(database.GetTermLoanCustomerDetail());
+           var result = SendTermLoanEmail(database.GetTermLoanTestData());
+           //  var result = SendTermLoanEmail(database.GetTermLoanCustomerDetail());
             var result2 = SendLeaseFinanceLoanEmail(database.GetLeaseLoanCustomerDetail());
             var result3 = SendOverdraftLoanEmail(database.GetOverdraftLoanCustomerDetail());
             Console.WriteLine("Service timer checker");
+            Console.ReadLine();
 
           
 
@@ -70,9 +71,13 @@ namespace BBGCombination.Domain.Service
             {
                 // call Email Sevice
                 logger.Info("Service running!!");
-                //var result = new EmailService();
+                var recepientMail = ConfigurationManager.AppSettings["EmailRecepient"].ToString();
 
-               
+                var result = SendTermLoanEmail(database.GetTermLoanTestData());
+                // var result = SendTermLoanEmail(database.GetTermLoanCustomerDetail());
+                var result2 = SendLeaseFinanceLoanEmail(database.GetLeaseLoanCustomerDetail());
+                var result3 = SendOverdraftLoanEmail(database.GetOverdraftLoanCustomerDetail());
+
                 thisTimer.Stop();
                 thisTimer.Dispose();
             }
@@ -137,7 +142,7 @@ namespace BBGCombination.Domain.Service
                     string path2 = rootPath + "\\Term-Loan-Notification-Urgent.html";
                    
                    // string path3 = rootPath + "\\Term-Loan-Notification-Follow-Up.html";
-                    string path3 = rootPath + "\\Term-Loan\\Term-Loan-Notification-Follow-Up";
+                    string path3 = rootPath + "\\Term-Loan-Notification-Follow-Up";
                    // string path4 = ConfigurationManager.AppSettings["30daysTermLoanTemplatePath"];
                     string path4 = rootPath + "\\Term-Loan-Notification.html";
                     //string path5 = ConfigurationManager.AppSettings["OverdueTermLoanTemplatePath"];
@@ -297,7 +302,7 @@ namespace BBGCombination.Domain.Service
                     }
                     logger.Info("The mail is: " + Result);
                     logger.Info("Success" + ConfigurationManager.AppSettings["EmailRecepient"].ToString());
-                    Console.ReadLine();
+                    //Console.ReadLine();
                 }
                 catch (Exception ex)
                 {
