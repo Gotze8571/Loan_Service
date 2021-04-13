@@ -36,8 +36,8 @@ namespace BBGCombination.Domain.Service
             // send mail to the customer email address.
             var recepientMail = ConfigurationManager.AppSettings["EmailRecepient"].ToString();
 
-           var result = SendTermLoanEmail(database.GetTermLoanTestData());
-           //  var result = SendTermLoanEmail(database.GetTermLoanCustomerDetail());
+            var result = SendTermLoanEmail(database.GetTermLoanTestData());
+            //  var result = SendTermLoanEmail(database.GetTermLoanCustomerDetail());
             var result2 = SendLeaseFinanceLoanEmail(database.GetLeaseLoanCustomerDetail());
             var result3 = SendOverdraftLoanEmail(database.GetOverdraftLoanCustomerDetail());
             Console.WriteLine("Service timer checker");
@@ -53,12 +53,11 @@ namespace BBGCombination.Domain.Service
         {
             logger.Info("Service Start!!");
 
-            thisTimer.Elapsed += thistTimer_Tick;
-            thisTimer.AutoReset = true;
-            thisTimer.Enabled = true;
+           // thisTimer.Elapsed += thistTimer_Tick;
+          //  thisTimer.AutoReset = true;
+           // thisTimer.Enabled = true;
 
             thisTimer.Start();
-
         }
         public void Stop()
         {
@@ -71,15 +70,21 @@ namespace BBGCombination.Domain.Service
             {
                 // call Email Sevice
                 logger.Info("Service running!!");
-                var recepientMail = ConfigurationManager.AppSettings["EmailRecepient"].ToString();
+                //var recepientMail = ConfigurationManager.AppSettings["EmailRecepient"].ToString();
 
-                var result = SendTermLoanEmail(database.GetTermLoanTestData());
-                // var result = SendTermLoanEmail(database.GetTermLoanCustomerDetail());
-                var result2 = SendLeaseFinanceLoanEmail(database.GetLeaseLoanCustomerDetail());
-                var result3 = SendOverdraftLoanEmail(database.GetOverdraftLoanCustomerDetail());
+                //var result = SendTermLoanEmail(database.GetTermLoanTestData());
+                //// var result = SendTermLoanEmail(database.GetTermLoanCustomerDetail());
+                //var result2 = SendLeaseFinanceLoanEmail(database.GetLeaseLoanCustomerDetail());
+                //var result3 = SendOverdraftLoanEmail(database.GetOverdraftLoanCustomerDetail());
 
-                thisTimer.Stop();
-                thisTimer.Dispose();
+                //string[] lines = new string[]
+                //{
+                //    DateTime.Now.ToString()
+                //};
+                //File.AppendAllLines(@"C:\Temp\Demos\BBGLoanCombination.txt", lines);
+
+                // thisTimer.Stop();
+                //  thisTimer.Dispose();
             }
             catch (Exception ex)
             {
@@ -470,7 +475,7 @@ namespace BBGCombination.Domain.Service
                     MailText = MailText.Replace("{AccountNumber}", thisEmailDetail.AccountNumber);
                     MailText = MailText.Replace("{DueDate}", thisEmailDetail.DueDate);
                     MailText = MailText.Replace("{DueAmt}", Convert.ToDouble(thisEmailDetail.DueAmt).ToString());
-                    MailText = MailText.Replace("{DueInDays}", (thisEmailDetail.DueInDays).ToString());
+                   // MailText = MailText.Replace("{DueInDays}", (thisEmailDetail.DueInDays).ToString());
                     MailText = MailText.Replace("{OutstandingAmt}", Convert.ToDouble(thisEmailDetail.OutstandingAmt).ToString());
                     MailText = MailText.Replace("{PastDueObligationAmt}", Convert.ToDouble(thisEmailDetail.PastDueObligationAmt).ToString());
                     MailText = MailText.Replace("{CustomerEmail}", thisEmailDetail.CustomerEmail);
