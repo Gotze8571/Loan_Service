@@ -15,7 +15,6 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -132,10 +131,6 @@
     <Compile Include="Migrations\202103150955166_TenthMigration.cs" />
     <Compile Include="Migrations\202103150955166_TenthMigration.designer.cs">
       <DependentUpon>202103150955166_TenthMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202104261101055_EleventhMigration.cs" />
-    <Compile Include="Migrations\202104261101055_EleventhMigration.designer.cs">
-      <DependentUpon>202104261101055_EleventhMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
@@ -303,9 +298,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103150955166_TenthMigration.resx">
       <DependentUpon>202103150955166_TenthMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202104261101055_EleventhMigration.resx">
-      <DependentUpon>202104261101055_EleventhMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

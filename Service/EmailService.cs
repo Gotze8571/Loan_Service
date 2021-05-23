@@ -37,11 +37,9 @@ namespace BBGCombination.Domain.Service
             var recepientMail = ConfigurationManager.AppSettings["EmailRecepient"].ToString();
 
             var result = SendTermLoanEmail(database.GetTermLoanTestData());
-            //var result1 = SendTermLoanEmail(database.GetTermLoanCustomerDetail());
+            //  var result = SendTermLoanEmail(database.GetTermLoanCustomerDetail());
             var result2 = SendLeaseFinanceLoanEmail(database.GetLeaseLoanCustomerDetail());
             var result3 = SendOverdraftLoanEmail(database.GetOverdraftLoanCustomerDetail());
-            
-            //var result4 = SendOverdraftLoanEmail(database.GetOverdraftFromFinacle());
             Console.WriteLine("Service timer checker");
             Console.ReadLine();
 
@@ -177,12 +175,6 @@ namespace BBGCombination.Domain.Service
                                 Activity = "Expired Term Loan.",
                                 EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                                 LoanDaysLeft = newSpan,
-                                AccountName = thisEmailDetail.AccountName,
-                                AccountNumber = thisEmailDetail.AccountNumber,
-                                DueAmount = thisEmailDetail.DueAmount,
-                                OutstandingAmt = thisEmailDetail.OutstandingAmt,
-                                ExpiredDate = thisEmailDetail.DueDate,
-                                FacilityType = thisEmailDetail.FacilityType,
                                 ActivityDate = DateTime.Now
                             };
                             db.Activitylogs.Add(log);
@@ -200,12 +192,6 @@ namespace BBGCombination.Domain.Service
                                 Activity = "7 days Expired Term Loan.",
                                 EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                                 LoanDaysLeft = newSpan,
-                                AccountName = thisEmailDetail.AccountName,
-                                AccountNumber = thisEmailDetail.AccountNumber,
-                                DueAmount = thisEmailDetail.DueAmount,
-                                OutstandingAmt = thisEmailDetail.OutstandingAmt,
-                                ExpiredDate = thisEmailDetail.DueDate,
-                                FacilityType = thisEmailDetail.FacilityType,
                                 ActivityDate = DateTime.Now
                             };
                             db.Activitylogs.Add(log);
@@ -224,12 +210,6 @@ namespace BBGCombination.Domain.Service
                                 Activity = "15 days Term Loan Expiration Notification!!",
                                 EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                                 LoanDaysLeft = newSpan,
-                                AccountName = thisEmailDetail.AccountName,
-                                AccountNumber = thisEmailDetail.AccountNumber,
-                                DueAmount = thisEmailDetail.DueAmount,
-                                OutstandingAmt = thisEmailDetail.OutstandingAmt,
-                                ExpiredDate = thisEmailDetail.DueDate,
-                                FacilityType = thisEmailDetail.FacilityType,
                                 ActivityDate = DateTime.Now
                             };
                             db.Activitylogs.Add(log);
@@ -247,12 +227,6 @@ namespace BBGCombination.Domain.Service
                                 Activity = "30 days Term Loan Expiration Notification!!",
                                 EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                                 LoanDaysLeft = newSpan,
-                                AccountName = thisEmailDetail.AccountName,
-                                AccountNumber = thisEmailDetail.AccountNumber,
-                                DueAmount = thisEmailDetail.DueAmount,
-                                OutstandingAmt = thisEmailDetail.OutstandingAmt,
-                                ExpiredDate = thisEmailDetail.DueDate,
-                                FacilityType = thisEmailDetail.FacilityType,
                                 ActivityDate = DateTime.Now
                             };
                             db.Activitylogs.Add(log);
@@ -269,12 +243,6 @@ namespace BBGCombination.Domain.Service
                                 Activity = "Overdue Term Loan Expiration Notification",
                                 EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                                 LoanDaysLeft = newSpan,
-                                AccountName = thisEmailDetail.AccountName,
-                                AccountNumber = thisEmailDetail.AccountNumber,
-                                DueAmount = thisEmailDetail.DueAmount,
-                                OutstandingAmt = thisEmailDetail.OutstandingAmt,
-                                ExpiredDate = thisEmailDetail.DueDate,
-                                FacilityType = thisEmailDetail.FacilityType,
                                 ActivityDate = DateTime.Now
                             };
                             db.Activitylogs.Add(log);
@@ -290,12 +258,6 @@ namespace BBGCombination.Domain.Service
                                 Activity = "Days of Term Loan Expiration not within Conditional Date!!",
                                 EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                                 LoanDaysLeft = newSpan,
-                                AccountName = thisEmailDetail.AccountName,
-                                AccountNumber = thisEmailDetail.AccountNumber,
-                                DueAmount = thisEmailDetail.DueAmount,
-                                OutstandingAmt = thisEmailDetail.OutstandingAmt,
-                                ExpiredDate = thisEmailDetail.DueDate,
-                                FacilityType = thisEmailDetail.FacilityType,
                                 ActivityDate = DateTime.Now
                             };
                             db.Activitylogs.Add(ac);
@@ -334,12 +296,6 @@ namespace BBGCombination.Domain.Service
                         {
                             EmailAddress = ConfigurationManager.AppSettings["EmailFrom"].ToString(),
                             EmailDateSent = DateTime.Now,
-                            AccountName = thisEmailDetail.AccountName,
-                            AccountNumber = thisEmailDetail.AccountNumber,
-                            DueAmount = thisEmailDetail.DueAmount,
-                            OutstandingAmt = thisEmailDetail.OutstandingAmt,
-                            FacilityType = thisEmailDetail.FacilityType,
-                            LoanDaysLeft = newSpan,
                             EmailReceived = true,
                             EmailSent = true,
                             EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
@@ -362,12 +318,6 @@ namespace BBGCombination.Domain.Service
                         {
                             ErrorName = "Email failed!!",
                             EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
-                            AccountName = thisEmailDetail.AccountName,
-                            AccountNumber = thisEmailDetail.AccountNumber,
-                            Exception = ex.Message,
-                            OutstandingAmt = thisEmailDetail.OutstandingAmt,
-                            ExpiredDate = thisEmailDetail.DueDate,
-                            DueAmount = thisEmailDetail.DueAmount,
                             ErrorDate = DateTime.Now
                         };
                         db.ErrorLogs.Add(err);
@@ -376,14 +326,8 @@ namespace BBGCombination.Domain.Service
                         {
                             EmailAddress = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                             EmailDateSent = DateTime.Now,
-                            AccountName = thisEmailDetail.AccountName,
-                            AccountNumber = thisEmailDetail.AccountNumber,
-                            DueAmount = thisEmailDetail.DueAmount,
-                            OutstandingAmt = thisEmailDetail.OutstandingAmt,
-                            FacilityType = thisEmailDetail.FacilityType,
-                            //LoanDaysLeft = newSpan,
-                            EmailReceived = true,
-                            EmailSent = true,
+                            EmailReceived = false,
+                            EmailSent = false,
                             EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                             EmailDateReceived = DateTime.Now,
                             Status = "Failed"
@@ -466,12 +410,6 @@ namespace BBGCombination.Domain.Service
                             Activity = "Overdue Lease Finance.",
                             EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                             LoanDaysLeft = newSpan,
-                            AccountName = thisEmailDetail.AccountName,
-                            AccountNumber = thisEmailDetail.AccountNumber,
-                            DueAmount = thisEmailDetail.DueAmt,
-                            OutstandingAmt = thisEmailDetail.OutstandingAmt,
-                            ExpiredDate = thisEmailDetail.DueDate,
-                            FacilityType = thisEmailDetail.FacilityType,
                             ActivityDate = DateTime.Now
                         };
                         context.Activitylogs.Add(logPath);
@@ -486,12 +424,6 @@ namespace BBGCombination.Domain.Service
                             Activity = "7 days Lease Loan Finance. ",
                             EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                             LoanDaysLeft = newSpan,
-                            AccountName = thisEmailDetail.AccountName,
-                            AccountNumber = thisEmailDetail.AccountNumber,
-                            DueAmount = thisEmailDetail.DueAmt,
-                            OutstandingAmt = thisEmailDetail.OutstandingAmt,
-                            ExpiredDate = thisEmailDetail.DueDate,
-                            FacilityType = thisEmailDetail.FacilityType,
                             ActivityDate = DateTime.Now
                         };
                         context.Activitylogs.Add(logPath2);
@@ -506,12 +438,6 @@ namespace BBGCombination.Domain.Service
                             Activity = "15 days Lease Loan Finance.",
                             EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                             LoanDaysLeft = newSpan,
-                            AccountName = thisEmailDetail.AccountName,
-                            AccountNumber = thisEmailDetail.AccountNumber,
-                            DueAmount = thisEmailDetail.DueAmt,
-                            OutstandingAmt = thisEmailDetail.OutstandingAmt,
-                            ExpiredDate = thisEmailDetail.DueDate,
-                            FacilityType = thisEmailDetail.FacilityType,
                             ActivityDate = DateTime.Now
                         };
                         context.Activitylogs.Add(logPath3);
@@ -526,12 +452,6 @@ namespace BBGCombination.Domain.Service
                             Activity = "30 days Lease Loan Finance.",
                             EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                             LoanDaysLeft = newSpan,
-                            AccountName = thisEmailDetail.AccountName,
-                            AccountNumber = thisEmailDetail.AccountNumber,
-                            DueAmount = thisEmailDetail.DueAmt,
-                            OutstandingAmt = thisEmailDetail.OutstandingAmt,
-                            ExpiredDate = thisEmailDetail.DueDate,
-                            FacilityType = thisEmailDetail.FacilityType,
                             ActivityDate = DateTime.Now
                         };
                         context.Activitylogs.Add(logPath4);
@@ -582,12 +502,6 @@ namespace BBGCombination.Domain.Service
                         {
                             EmailAddress = ConfigurationManager.AppSettings["EmailFrom"].ToString(),
                             EmailDateSent = DateTime.Now,
-                            AccountName = thisEmailDetail.AccountName,
-                            AccountNumber = thisEmailDetail.AccountNumber,
-                            DueAmount = thisEmailDetail.DueAmt,
-                            OutstandingAmt = thisEmailDetail.OutstandingAmt,
-                            FacilityType = thisEmailDetail.FacilityType,
-                            LoanDaysLeft = newSpan,
                             EmailReceived = true,
                             EmailSent = true,
                             EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
@@ -609,12 +523,6 @@ namespace BBGCombination.Domain.Service
                         {
                             ErrorName = "Email failed!!",
                             EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
-                            AccountName = thisEmailDetail.AccountName,
-                            AccountNumber = thisEmailDetail.AccountNumber,
-                            Exception = ex.Message,
-                            OutstandingAmt = thisEmailDetail.OutstandingAmt,
-                            ExpiredDate = thisEmailDetail.DueDate,
-                            DueAmount = thisEmailDetail.DueAmt,
                             ErrorDate = DateTime.Now
                         };
                         db.ErrorLogs.Add(err);
@@ -623,14 +531,8 @@ namespace BBGCombination.Domain.Service
                         {
                             EmailAddress = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                             EmailDateSent = DateTime.Now,
-                            AccountName = thisEmailDetail.AccountName,
-                            AccountNumber = thisEmailDetail.AccountNumber,
-                            DueAmount = thisEmailDetail.DueAmt,
-                            OutstandingAmt = thisEmailDetail.OutstandingAmt,
-                            FacilityType = thisEmailDetail.FacilityType,
-                            //LoanDaysLeft = newSpan,
-                            EmailReceived = true,
-                            EmailSent = true,
+                            EmailReceived = false,
+                            EmailSent = false,
                             EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
                             EmailDateReceived = DateTime.Now,
                             Status = "Failed"
@@ -686,6 +588,7 @@ namespace BBGCombination.Domain.Service
                     string rootPath = Directory.GetCurrentDirectory();
                     //string path = ConfigurationManager.AppSettings["ExpiredOverdraftLoanTemplatePath"];
                     string path = rootPath + "\\Important-Notice-On-Your-Overdraft.html";
+
                     //string path2 = ConfigurationManager.AppSettings["OverdraftLimitTemplatePath"];
                     string path2 = rootPath + "\\Important-Notice-On-Your-Overdraft.html";
                     //string path3 = ConfigurationManager.AppSettings["FollowUpOverdraftLoanTemplatePath"];
@@ -706,7 +609,6 @@ namespace BBGCombination.Domain.Service
                     {
                         stringPath = path;
                         logger.Info("The No of days and path: ");
-                       
                         using (DataConnectorContext db = new DataConnectorContext())
                         {
                             ActivityLog ac = new ActivityLog
@@ -780,7 +682,7 @@ namespace BBGCombination.Domain.Service
                     MailText = MailText.Replace("{AccountNumber}", thisEmailDetail.AccountNumber);
                     MailText = MailText.Replace("{DueDate}", thisEmailDetail.DueDate);
                     MailText = MailText.Replace("{DueAmt}", Convert.ToDouble(thisEmailDetail.DueAmt).ToString());
-                    //MailText = MailText.Replace("{DueInDays}", (thisEmailDetail.DueInDays).ToString());
+                    MailText = MailText.Replace("{DueInDays}", (thisEmailDetail.DueInDays).ToString());
                     MailText = MailText.Replace("{OutstandingAmt}", Convert.ToDouble(thisEmailDetail.OutstandingAmt).ToString());
                     //MailText = MailText.Replace("{PastDueObligationAmt}", Convert.ToDouble(thisEmailDetail.PastDueObligationAmt).ToString());
                     MailText = MailText.Replace("{CustomerEmail}", thisEmailDetail.CustomerEmail);
@@ -830,24 +732,19 @@ namespace BBGCombination.Domain.Service
                         };
                         db.ErrorLogs.Add(err);
                         db.SaveChanges();
-                        //EmailNotify emp = new EmailNotify
-                        //{
-                        //    EmailAddress = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
-                        //    AccountName = thisEmailDetail.AccountName,
-                        //    AccountNumber = thisEmailDetail.AccountNumber,
-                        //    DueAmount = thisEmailDetail.DueAmt,
-                        //    OutstandingAmt = thisEmailDetail.OutstandingAmt,
-                        //    FacilityType = thisEmailDetail.FacilityType,
-                        //    //LoanDaysLeft = newSpan,
-                        //    EmailReceived = true,
-                        //    EmailSent = true,
-                        //    EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
-                        //    EmailDateReceived = DateTime.Now,
-                        //    Status = "Failed"
+                        EmailNotify emp = new EmailNotify
+                        {
+                            EmailAddress = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                            EmailDateSent = DateTime.Now,
+                            EmailReceived = false,
+                            EmailSent = false,
+                            EmailRecipient = ConfigurationManager.AppSettings["EmailRecepient"].ToString(),
+                            EmailDateReceived = DateTime.Now,
+                            Status = "Failed"
 
-                        //};
-                        //db.EmailNotifies.Add(emp);
-                        //db.SaveChanges();
+                        };
+                        db.EmailNotifies.Add(emp);
+                        db.SaveChanges();
                     }
                 }
             }
@@ -864,25 +761,25 @@ namespace BBGCombination.Domain.Service
         }
 
         // Send mail Term Loan Method
-        //public string GetTermLoan()
-        //{
-        //   // var result = SendTermLoanEmail(database.GetTermLoanCustomerDetail());
-        //    var result = SendTermLoanEmail(database.GetTermLoanTestData());
-        //    logger.Info("Connect email service to finacle!!");
-        //    return result;
-        //}
+        public string GetTermLoan()
+        {
+           // var result = SendTermLoanEmail(database.GetTermLoanCustomerDetail());
+            var result = SendTermLoanEmail(database.GetTermLoanTestData());
+            logger.Info("Connect email service to finacle!!");
+            return result;
+        }
         // Send mail Leae Finance Loan Method
-        //public  string GetLeaseLoan()
-        //{
-        //    var result2 = SendLeaseFinanceLoanEmail(database.GetLeaseLoanCustomerDetail());
-        //    return result2;
-        //}
+        public  string GetLeaseLoan()
+        {
+            var result2 = SendLeaseFinanceLoanEmail(database.GetLeaseLoanCustomerDetail());
+            return result2;
+        }
         // Send mail Overdraft Loan Method
-        //public string GetOverdraftLoan()
-        //{
-        //    var result3 = SendOverdraftLoanEmail(database.GetOverdraftLoanCustomerDetail());
-        //    return result3;
-        //}
+        public string GetOverdraftLoan()
+        {
+            var result3 = SendOverdraftLoanEmail(database.GetOverdraftLoanCustomerDetail());
+            return result3;
+        }
 
         //// Get information from finacle and log customers details on 103 Db.
         //public TermLoanList GetCustomersDetailsLogIntoTestServerTermLoan()
