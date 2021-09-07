@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BBGCombination.Domain", "BBGCombination.Domain.csproj", "{C1B8B879-EC42-4A1F-B966-0B42B3AD6340}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BBG.Core", "..\BBG.Core\BBG.Core.csproj", "{C973E308-72ED-4D99-AFA1-517B5AC402E7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C1B8B879-EC42-4A1F-B966-0B42B3AD6340}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1B8B879-EC42-4A1F-B966-0B42B3AD6340}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1B8B879-EC42-4A1F-B966-0B42B3AD6340}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1B8B879-EC42-4A1F-B966-0B42B3AD6340}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C973E308-72ED-4D99-AFA1-517B5AC402E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C973E308-72ED-4D99-AFA1-517B5AC402E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C973E308-72ED-4D99-AFA1-517B5AC402E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C973E308-72ED-4D99-AFA1-517B5AC402E7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F204D6A8-84CA-4EBD-BF3A-E0456CD808DF}
+	EndGlobalSection
+EndGlobal
